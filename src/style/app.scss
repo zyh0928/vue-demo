@@ -1,0 +1,23 @@
+// Material Design Icons
+@import "~@mdi/font/css/materialdesignicons.css";
+// Animate.css
+@import "~animate.css/animate.css";
+
+::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--v-primary-base);
+
+  &:hover {
+    background: var(--v-primary-lighten1);
+    border-radius: 3px;
+    cursor: pointer;
+  }
+}
+
+::-webkit-scrollbar-track {
+  background: rgba($color: black, $alpha: 0.2);
+}
