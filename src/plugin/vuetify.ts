@@ -1,3 +1,4 @@
+/// <reference types="vuetify" />
 // Customization
 import "@/style/app.scss";
 import Vue from "vue";

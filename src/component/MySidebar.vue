@@ -7,14 +7,14 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import SidebarMenu from "./SidebarMenu.vue";
-
+import { Global } from "typings";
 @Component({
   components: {
     SidebarMenu
   }
 })
 export default class MySidebar extends Vue {
-  readonly menus: IMenu[] = [
+  readonly menus: Global.Menu[] = [
     {
       id: 1,
       label: !0,
@@ -30,7 +30,7 @@ export default class MySidebar extends Vue {
         "zh-Hans": "嗨！！",
         en: "Welcome"
       },
-      router: "welcome"
+      route: "welcome"
     },
     {
       icon: "mdi-information-variant",
@@ -39,7 +39,7 @@ export default class MySidebar extends Vue {
         "zh-Hans": "关于",
         en: "About"
       },
-      router: "about"
+      route: "about"
     },
     {
       id: 4,
@@ -56,7 +56,7 @@ export default class MySidebar extends Vue {
         "zh-Hans": "根节点",
         en: "Root Node"
       },
-      router: "node",
+      route: "node",
 
       children: [
         {
@@ -66,7 +66,7 @@ export default class MySidebar extends Vue {
             "zh-Hans": "子节点-1",
             en: "Subnode-1"
           },
-          router: "1"
+          route: "1"
         },
         {
           icon: "mdi-skull-outline",
@@ -75,7 +75,7 @@ export default class MySidebar extends Vue {
             "zh-Hans": "子节点-2",
             en: "Subnode-2"
           },
-          router: "2",
+          route: "2",
 
           children: [
             {
@@ -85,7 +85,7 @@ export default class MySidebar extends Vue {
                 "zh-Hans": "子节点-2-1",
                 en: "Subnode-2-1"
               },
-              router: "1"
+              route: "1"
             },
             {
               icon: "mdi-heart-half-full",
@@ -94,7 +94,7 @@ export default class MySidebar extends Vue {
                 "zh-Hans": "子节点-2-2",
                 en: "Subnode-2-2"
               },
-              router: "2"
+              route: "2"
             },
             {
               icon: "mdi-hubspot",
@@ -103,7 +103,7 @@ export default class MySidebar extends Vue {
                 "zh-Hans": "子节点-2-3",
                 en: "Subnode-2-3"
               },
-              router: "3"
+              route: "3"
             }
           ]
         },
@@ -114,7 +114,7 @@ export default class MySidebar extends Vue {
             "zh-Hans": "子节点-3",
             en: "Subnode-3"
           },
-          router: "3",
+          route: "3",
 
           children: [
             {
@@ -124,7 +124,7 @@ export default class MySidebar extends Vue {
                 "zh-Hans": "子节点-3-1",
                 en: "Subnode-3-1"
               },
-              router: "1"
+              route: "1"
             },
             {
               icon: "mdi-cards",
@@ -133,7 +133,7 @@ export default class MySidebar extends Vue {
                 "zh-Hans": "子节点-3-2",
                 en: "Subnode-3-2"
               },
-              router: "2"
+              route: "2"
             },
             {
               icon: "mdi-cube",
@@ -142,7 +142,7 @@ export default class MySidebar extends Vue {
                 "zh-Hans": "子节点-3-3",
                 en: "Subnode-3-3"
               },
-              router: "3"
+              route: "3"
             }
           ]
         }

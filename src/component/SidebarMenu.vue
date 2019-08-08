@@ -9,7 +9,7 @@
       />
 
       <v-list-group
-        :group="`/${item.router}/`"
+        :group="`/${item.route}/`"
         :key="`siderbar-menu${item.id}`"
         :prepend-icon="item.icon"
         v-else-if="Array.isArray(item.children)"
@@ -20,7 +20,7 @@
 
         <template v-for="subitem of item.children">
           <v-list-group
-            :group="`/${item.router}/${subitem.router}/`"
+            :group="`/${item.route}/${subitem.route}/`"
             :key="`siderbar-menu${subitem.id}`"
             prepend-icon="mdi-chevron-up"
             sub-group
@@ -32,7 +32,7 @@
 
             <v-list-item
               :key="`siderbar-menu${leaf.id}`"
-              :to="`/${item.router}/${subitem.router}/${leaf.router}`"
+              :to="`/${item.route}/${subitem.route}/${leaf.route}`"
               active-class="primary white--text"
               v-for="leaf of subitem.children"
             >
@@ -46,7 +46,7 @@
 
           <v-list-item
             :key="`siderbar-menu${subitem.id}`"
-            :to="`/${item.router}/${subitem.router}`"
+            :to="`/${item.route}/${subitem.route}`"
             active-class="primary white--text"
             v-else
           >
@@ -61,7 +61,7 @@
 
       <v-list-item
         :key="`siderbar-menu${item.id}`"
-        :to="`/${item.router}`"
+        :to="`/${item.route}`"
         active-class="primary white--text"
         v-else
       >
@@ -77,10 +77,11 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
+import { Global } from "typings";
 
 @Component
 export default class SidebarMenu extends Vue {
   @Prop({ type: Array, default: () => [] })
-  readonly menus!: IMenu[];
+  readonly menus!: Global.Menu[];
 }
 </script>

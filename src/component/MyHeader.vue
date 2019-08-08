@@ -37,6 +37,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import { Global } from "typings";
 import { State } from "vuex-class";
 
 @Component
@@ -52,7 +53,7 @@ export default class MyHeader extends Vue {
     localStorage.dark = this.$vuetify.theme.dark;
   }
 
-  langs: ILanguage[] = [
+  langs: Global.Language[] = [
     { code: "zh-Hans", label: "简体中文" },
     { code: "en", label: "English" }
   ];

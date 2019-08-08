@@ -1,12 +1,12 @@
 # editor directories and files
-/.vscode
-/.idea
+.vscode/
+.idea/
 
 # production
-/dist
+dist/
 
 # dependencies
-/node_modules
+node_modules/
 
 # log files
 yarn-debug.log*
