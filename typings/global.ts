@@ -1,3 +1,18 @@
+import { Method } from "axios";
+
+export interface SendHttpOptions {
+  url: string;
+  method: Method;
+  data: any;
+  params: any;
+  returnAll: boolean;
+  respKey: string;
+}
+export interface Utils {
+  sendHttp: (args: Partial<SendHttpOptions>) => Promise<any>;
+  sleep: (milliseconds: number) => Promise<void>;
+}
+
 export interface Language {
   code: string;
   label: string;

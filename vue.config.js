@@ -1,45 +1,39 @@
 // const webpack = require("webpack");
 
 module.exports = {
+  outputDir: "dist",
+  publicPath: process.env.BASE_URL,
   productionSourceMap: !1,
   devServer: {
     port: 9029,
     proxy: {
       "/api": {
-        target: "http://gank.io/",
+        target: "https://gank.io/api/v2",
         changeOrigin: !0,
-        ws: !0
-      }
-    }
+        ws: !0,
+        pathRewrite: {
+          "^/api": "/",
+        },
+      },
+    },
   },
 
   configureWebpack: {
-    devtool: "source-map"
-    //   plugins: [
-    //     new webpack.ProvidePlugin({
-    //       axios: "axios"
-    //     })
-    //   ]
+    devtool: "source-map",
+    // plugins: [
+    //   new webpack.ProvidePlugin({
+    //     axios: "axios",
+    //   }),
+    // ],
   },
 
   css: {
     loaderOptions: {
-      sass: {
-        data: `@import "~@/style/main"`
-      }
-      // stylus: {
-      //   import: [`~@/style/_color`, `~@/style/_mixin`]
-      // }
-    }
+      scss: {
+        additionalData: `@import "~@/styles/main";`,
+      },
+    },
   },
 
-  chainWebpack: config => {
-    ["vue-modules", "vue", "normal-modules", "normal"].forEach(match => {
-      config.module
-        .rule("scss")
-        .oneOf(match)
-        .use("sass-loader")
-        .tap(opt => Object.assign(opt, { data: `@import "~@/style/main";` }));
-    });
-  }
+  transpileDependencies: ["vuetify"],
 };

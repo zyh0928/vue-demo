@@ -1,5 +1,7 @@
-import view from "./view";
+import validations from "./validations";
+import views from "./views";
 
 export default {
-  view
+  validations,
+  views,
 };
