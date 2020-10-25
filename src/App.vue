@@ -4,30 +4,30 @@
 
     <my-header />
 
-    <v-content>
-      <v-container fill-height fluid pa-0>
+    <v-main>
+      <v-container fluid>
         <transition
-          enter-active-class="animated jackInTheBox fast"
-          leave-active-class="animated bounceOut fast"
+          enter-active-class="animate__animated animate__jackInTheBox animate__fast"
+          leave-active-class="animate__animated animate__bounceOut animate__fast"
           mode="out-in"
         >
           <router-view />
         </transition>
       </v-container>
-    </v-content>
+    </v-main>
   </v-app>
 </template>
 
 <script lang="ts">
-import MyHeader from "@/component/MyHeader.vue";
-import MySidebar from "@/component/MySidebar.vue";
+import MyHeader from "@/components/MyHeader.vue";
+import MySidebar from "@/components/MySidebar.vue";
 import { Component, Vue } from "vue-property-decorator";
 
 @Component({
   components: {
     MyHeader,
-    MySidebar
-  }
+    MySidebar,
+  },
 })
 export default class App extends Vue {}
 </script>
