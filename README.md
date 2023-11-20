@@ -1,3 +1,10 @@
 # Vite Demo
 
-Vue 3
+## Path Alias
+
+| Alias | Path           |
+| ----- | -------------- |
+| @/\*  | src/\*         |
+| #/\*  | src/store/\*   |
+| $/\*  | src/service/\* |
+| ~/\*  | src/assets/\*  |

@@ -60,6 +60,9 @@ rules:
         - group: external
           pattern: "@/**"
           position: after
+        - group: external
+          pattern: "[#,$,~]/**"
+          position: after
   simple-import-sort/exports: 2
   sort-imports:
     - 2

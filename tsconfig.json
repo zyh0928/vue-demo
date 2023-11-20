@@ -8,7 +8,10 @@
     "module": "esnext",
     "moduleResolution": "Node",
     "paths": {
-      "@/*": ["src/*"]
+      "#/*": ["src/store/*"],
+      "$/*": ["src/service/*"],
+      "@/*": ["src/*"],
+      "~/*": ["src/assets/*"]
     },
     "resolveJsonModule": true,
     "skipLibCheck": true,
