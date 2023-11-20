@@ -1,0 +1,115 @@
+{
+  "$ref": "#/definitions/I18nSchema",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "About": {
+      "additionalProperties": false,
+      "properties": {
+        "placeholder": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "required": ["placeholder", "title"],
+      "type": "object"
+    },
+    "Error": {
+      "additionalProperties": false,
+      "properties": {
+        "404": {
+          "type": "string"
+        },
+        "500": {
+          "type": "string"
+        }
+      },
+      "required": ["404", "500"],
+      "type": "object"
+    },
+    "I18nSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "validations": {
+          "$ref": "#/definitions/Validations"
+        },
+        "views": {
+          "$ref": "#/definitions/Views"
+        }
+      },
+      "required": ["validations", "views"],
+      "type": "object"
+    },
+    "Image": {
+      "additionalProperties": false,
+      "properties": {
+        "cat": {
+          "type": "string"
+        },
+        "dog": {
+          "type": "string"
+        },
+        "girl": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "required": ["cat", "dog", "girl", "title"],
+      "type": "object"
+    },
+    "Validations": {
+      "additionalProperties": false,
+      "properties": {
+        "required": {
+          "type": "string"
+        }
+      },
+      "required": ["required"],
+      "type": "object"
+    },
+    "Views": {
+      "additionalProperties": false,
+      "properties": {
+        "about": {
+          "$ref": "#/definitions/About"
+        },
+        "error": {
+          "$ref": "#/definitions/Error"
+        },
+        "image": {
+          "$ref": "#/definitions/Image"
+        },
+        "welcome": {
+          "$ref": "#/definitions/Welcome"
+        }
+      },
+      "required": ["about", "error", "image", "welcome"],
+      "type": "object"
+    },
+    "Welcome": {
+      "additionalProperties": false,
+      "properties": {
+        "axis": {
+          "type": "string"
+        },
+        "fade": {
+          "type": "string"
+        },
+        "slide": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "wave": {
+          "type": "string"
+        }
+      },
+      "required": ["axis", "fade", "slide", "title", "wave"],
+      "type": "object"
+    }
+  }
+}

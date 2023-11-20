@@ -1,0 +1,3 @@
+pnpm-lock.yaml
+src/types/auto-components.d.ts
+src/types/auto-imports.d.ts

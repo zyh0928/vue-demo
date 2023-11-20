@@ -1,0 +1,20 @@
+validations:
+  required: "{field}不能为空。"
+views:
+  about:
+    placeholder: 请输入Ovooa Api
+    title: 关于 Vue Demo
+  error:
+    "404": 页面未找到
+    "500": 内部服务器错误
+  image:
+    cat: 喵星人
+    dog: 汪汪
+    girl: 妹子
+    title: 哇呜！
+  welcome:
+    axis: 轴
+    fade: 渐隐
+    slide: 滑动
+    title: Vue Demo 主页
+    wave: 波浪

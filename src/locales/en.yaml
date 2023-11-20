@@ -1,0 +1,20 @@
+validations:
+  required: "{field} is required."
+views:
+  about:
+    placeholder: Place Enter Ovooa Api
+    title: About Vue Demo
+  error:
+    "404": Page not found
+    "500": Internal server error
+  image:
+    cat: Nyan
+    dog: Yap
+    girl: Girl
+    title: Image
+  welcome:
+    axis: Axis
+    fade: Fade
+    slide: Slide
+    title: Welcome to Vue Demo
+    wave: Wave

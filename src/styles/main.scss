@@ -1,0 +1,26 @@
+
+@use "vuetify" with (
+  $body-font-family: (
+    "Raleway",
+    "Noto Sans SC",
+    sans-serif,
+  )
+);
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--v-theme-primary));
+
+  &:hover {
+    cursor: pointer;
+    background: rgb(var(--v-theme-error));
+  }
+}
+
+::-webkit-scrollbar-track {
+  background: rgba($color: black, $alpha: 0.2);
+}
