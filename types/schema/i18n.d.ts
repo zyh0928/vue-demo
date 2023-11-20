@@ -39,7 +39,7 @@ declare interface I18nSchema {
   views: Views;
 }
 
-// npx ts-json-schema-generator --path src/types/schema/i18n.d.ts --type I18nSchema
+// npx ts-json-schema-generator --path types/schema/i18n.d.ts --type I18nSchema
 // export interface I18nSchema {
 //   validations: Validations;
 //   views: Views;

@@ -17,7 +17,7 @@ export default defineConfig(({ mode }) => ({
   envPrefix: "DEMO_",
   plugins: [
     AutoImport({
-      dts: "./src/types/auto-imports.d.ts",
+      dts: "types/auto-imports.d.ts",
       imports: [
         "vue",
         "vue-router",
@@ -28,7 +28,7 @@ export default defineConfig(({ mode }) => ({
       ],
     }),
     Components({
-      dts: "./src/types/auto-components.d.ts",
+      dts: "types/auto-components.d.ts",
     }),
     Vue({
       template: { transformAssetUrls },
