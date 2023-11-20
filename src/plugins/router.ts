@@ -1,9 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useLocale } from "vuetify";
 
-import { langs } from "@/assets/variables.json";
 import children from "@/routes";
-import useGlobalStore from "@/store/global";
+
+import useGlobalStore from "#/global";
+import { langs } from "~/variables.json";
 
 import i18n from "./i18n";
 

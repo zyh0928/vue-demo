@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { getList as getCats } from "@/service/cat";
-import { getList as getDogs } from "@/service/dog";
+import { getList as getCats } from "$/cat";
+import { getList as getDogs } from "$/dog";
 
 const title = ref("");
 

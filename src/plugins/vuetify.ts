@@ -3,7 +3,7 @@ import "@/styles/main.scss";
 import { createVuetify } from "vuetify";
 import { en, zhHans } from "vuetify/locale";
 
-import { locale, localeFallback } from "@/assets/variables.json";
+import { locale, localeFallback } from "~/variables.json";
 
 import type { LocaleMessages, ThemeDefinition } from "vuetify";
 

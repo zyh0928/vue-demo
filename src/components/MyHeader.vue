@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { langs } from "@/assets/variables.json";
-import useGlobalStore from "@/store/global";
+import useGlobalStore from "#/global";
+import { langs } from "~/variables.json";
 
 defineEmits<{
   "toggle:dark": [];

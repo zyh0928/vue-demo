@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import { defalutMenus, sidebarWidth } from "@/assets/variables.json";
 import { list2tree } from "@/utils/tree";
+
+import { defalutMenus, sidebarWidth } from "~/variables.json";
 
 type MenuType = {
   children?: MenuType[];

@@ -1,4 +1,4 @@
-import { colors } from "@/assets/variables.json";
+import { colors } from "~/variables.json";
 
 import useUserStore from "./user";
 
