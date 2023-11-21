@@ -2,13 +2,18 @@ import { extend } from "umi-request";
 
 const timeout = 1000 * 15;
 
+const catRequest = extend({
+  prefix: import.meta.env.DEMO_CAT_API,
+  timeout,
+});
+
 const dogRequest = extend({
   prefix: import.meta.env.DEMO_DOG_API,
   timeout,
 });
 
-const catRequest = extend({
-  prefix: import.meta.env.DEMO_CAT_API,
+const girlRequest = extend({
+  prefix: import.meta.env.DEMO_GIRL_API,
   timeout,
 });
 
@@ -20,4 +25,4 @@ const jrscRequest = extend({
   timeout,
 });
 
-export { catRequest, dogRequest, jrscRequest };
+export { catRequest, dogRequest, girlRequest, jrscRequest };

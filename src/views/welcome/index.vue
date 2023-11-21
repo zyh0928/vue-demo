@@ -318,7 +318,7 @@ onMounted(async () => {
       <div :style="boxStyle" class="mx-auto box">
         <v-sheet
           v-for="value in options.total"
-          :key="`node${value}`"
+          :key="value"
           :color="options.color"
           :height="options.size"
           :width="options.size"

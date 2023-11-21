@@ -1,32 +1,45 @@
 <script lang="ts" setup>
 import { getList as getCats } from "$/cat";
 import { getList as getDogs } from "$/dog";
+import { getList as getGirls } from "$/girl";
 
-const title = ref("");
+interface Detail {
+  dialog: boolean;
+  url: string;
+  width: number;
+}
 
+const loading = ref(!1);
 const page = ref("girl");
-
 const imgs = ref<string[]>([]);
 
+const detail = reactive<Detail>({
+  dialog: !1,
+  url: "",
+  width: 0,
+});
+
 const getImgs = async () => {
-  imgs.value = [];
-
+  loading.value = !0;
   switch (page.value) {
-    case "girl":
-      return;
+    case "girl": {
+      const list = Array.from({ length: 8 }, () => getGirls());
 
-    case "cosplay": {
-      return;
+      imgs.value = (await Promise.all(list)).map(
+        ({ url }: Recordable<string>) => url,
+      );
+      break;
     }
 
     case "dog":
       imgs.value = await getDogs();
-      return;
+      break;
 
     case "cat":
-      imgs.value = await getCats();
-      return;
+      imgs.value = (await getCats()).map(({ url }: Recordable<string>) => url);
+      break;
   }
+  loading.value = !1;
 };
 
 const changePage = async (value: string) => {
@@ -41,21 +54,15 @@ onMounted(async () => {
   await getImgs();
 });
 
-const detailDialog = ref(!1);
-
-const detailWidth = ref(0);
-
-const detailUrl = ref("");
-
 const openDetail = (url: string) => {
   const img = new Image();
 
   img.src = url;
 
   img.addEventListener("load", () => {
-    detailWidth.value = img.width;
-    detailUrl.value = url;
-    detailDialog.value = !0;
+    detail.width = img.width;
+    detail.url = url;
+    detail.dialog = !0;
   });
 };
 </script>
@@ -64,16 +71,15 @@ const openDetail = (url: string) => {
   <v-row>
     <v-col cols="12">
       <v-toolbar>
-        <v-btn color="primary" icon="mdi-refresh" @click="getImgs" />
-
-        <div v-if="page === 'cosplay'" class="text-h6">
-          <span v-text="title" />
-          <span v-text="`「 ${imgs.length} 张」`" />
-        </div>
-
-        <v-spacer />
+        <v-btn
+          :loading="loading"
+          color="primary"
+          icon="mdi-refresh"
+          @click="getImgs"
+        />
 
         <v-btn-toggle
+          :disabled="loading"
           :model-value="page"
           mandatory
           class="rounded-0"
@@ -81,52 +87,44 @@ const openDetail = (url: string) => {
           variant="text"
           @update:model-value="changePage"
         >
-          <v-btn value="girl"> {{ $t("views.image.girl") }} </v-btn>
+          <v-btn class="text-none" value="girl">
+            {{ $t("views.image.girl") }}
+          </v-btn>
 
-          <v-btn value="cosplay"> Cosplay </v-btn>
+          <v-btn value="dog">{{ $t("views.image.dog") }}</v-btn>
 
-          <v-btn value="dog"> {{ $t("views.image.dog") }} </v-btn>
-
-          <v-btn value="cat"> {{ $t("views.image.cat") }} </v-btn>
+          <v-btn value="cat">{{ $t("views.image.cat") }}</v-btn>
         </v-btn-toggle>
       </v-toolbar>
     </v-col>
 
     <v-col cols="12">
       <v-container v-if="imgs.length">
-        <transition-group
-          class="v-row v-row--dense"
-          enter-active-class="animate__animated animate__bounceIn animate__fast"
-          leave-active-class="animate__animated animate__bounceOut animate__fast"
-          mode="out-in"
-          tag="div"
-        >
+        <transition-group class="v-row v-row--dense" name="list" tag="div">
           <v-col
             v-for="(url, index) of imgs"
-            :key="`img${url}`"
+            :key="url"
             cols="12"
             lg="4"
             sm="6"
             xl="3"
           >
             <v-card hover @click.stop="openDetail(url)">
-              <v-img :src="url" aspect-ratio="1">
+              <v-img :src="url" cover aspect-ratio="1">
                 <template #placeholder>
-                  <v-row align="center" class="fill-height" justify="center">
+                  <div class="h-100 d-flex justify-center align-center">
                     <v-progress-circular
                       indeterminate
                       color="primary"
                       size="48"
                       width="2"
                     />
-                  </v-row>
+                  </div>
                 </template>
 
-                <v-row dense align="end" class="fill-height text-end">
-                  <v-col class="pr-4 text-h5 text-white card-txt">
-                    No.{{ index + 1 }}
-                  </v-col>
-                </v-row>
+                <div class="h-100 d-flex justify-end align-end">
+                  <div class="text-h5 card-txt">No. {{ index + 1 }}</div>
+                </div>
               </v-img>
             </v-card>
           </v-col>
@@ -134,9 +132,14 @@ const openDetail = (url: string) => {
       </v-container>
     </v-col>
 
-    <v-dialog v-model="detailDialog">
-      <v-card max-width="1920">
-        <v-img :src="detailUrl" :width="detailWidth" />
+    <v-dialog
+      v-model="detail.dialog"
+      :width="detail.width"
+      max-height="100vh"
+      max-width="1200"
+    >
+      <v-card>
+        <v-img :src="detail.url" cover />
       </v-card>
     </v-dialog>
   </v-row>
@@ -144,6 +147,24 @@ const openDetail = (url: string) => {
 
 <style lang="scss" scoped>
 .card-txt {
-  text-shadow: 2px 2px 4px rgba(black, 0.7);
+  margin: 16px;
+  color: rgb(var(--v-theme-background));
+  text-shadow: 0 0 2px rgba(var(--v-theme-on-background), 0.7);
+}
+
+.list-move,
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.5s ease;
+}
+
+.list-enter-from,
+.list-leave-to {
+  transform: translateX(30px);
+  opacity: 0;
+}
+
+.list-leave-active {
+  position: absolute;
 }
 </style>

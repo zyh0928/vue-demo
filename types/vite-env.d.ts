@@ -16,6 +16,7 @@ interface ImportMetaEnv {
   BASE_URL: string;
   DEMO_CAT_API: string;
   DEMO_DOG_API: string;
+  DEMO_GIRL_API: string;
   DEMO_JRSC_API: string;
 }
 
