@@ -1,7 +1,10 @@
 import "@/styles/main.scss";
 
 import { createVuetify } from "vuetify";
-import { en, zhHans } from "vuetify/locale";
+// @ts-expect-error
+import en from "vuetify/lib/locale/en";
+// @ts-expect-error
+import zh from "vuetify/lib/locale/zh-Hans";
 
 import { locale, localeFallback } from "~/variables.json";
 
@@ -27,7 +30,7 @@ const light: ThemeDefinition = {
 
 const messages: Record<I18nCode, LocaleMessages> = {
   en,
-  zh: zhHans,
+  zh,
 };
 
 export default createVuetify({

@@ -12,7 +12,11 @@ import Vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
 export default defineConfig(({ mode }) => ({
   base: loadEnv(mode, process.cwd(), "BASE_URL").BASE_URL,
   build: {
-    outDir: "vue-demo",
+    terserOptions: {
+      compress: {
+        drop_console: !0,
+      },
+    },
   },
   envPrefix: "DEMO_",
   plugins: [

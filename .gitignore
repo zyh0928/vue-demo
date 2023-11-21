@@ -1,5 +1,5 @@
 # production
-vue-demo/
+dist/
 
 # editor directories and files
 .idea/
