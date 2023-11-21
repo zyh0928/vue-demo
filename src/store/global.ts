@@ -1,34 +1,31 @@
-import { colors } from "~/variables.json";
-
 import useUserStore from "./user";
 
-export default defineStore("global", {
-  actions: {
-    clearInfo() {
-      this.init();
+export default defineStore("global", () => {
+  const user = useUserStore();
 
-      const user = useUserStore();
-      user.init();
+  const page = ref("");
 
-      sessionStorage.clear();
-      localStorage.clear();
-    },
-    getRandomColor() {
-      return this.colors[Math.floor(Math.random() * this.colors.length)];
-    },
-    getSequenceColor(index: number) {
-      return this.colors[index % this.colors.length];
-    },
-    init() {
-      this.page = "";
-    },
-    setPage(value: unknown) {
-      this.page = typeof value === "string" ? value : "";
-    },
-  },
-  getters: {},
-  state: () => ({
-    colors,
-    page: "",
-  }),
+  const $reset = () => {
+    page.value = "";
+  };
+
+  const clearInfo = () => {
+    $reset();
+
+    user.$reset();
+
+    sessionStorage.clear();
+    localStorage.clear();
+  };
+
+  const setPage = (value: unknown) => {
+    page.value = typeof value === "string" ? value : "";
+  };
+
+  return {
+    $reset,
+    clearInfo,
+    page,
+    setPage,
+  };
 });

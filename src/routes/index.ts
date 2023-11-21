@@ -26,12 +26,18 @@ export default <RouteRecordRaw[]>[
     children: [
       {
         component: NodeChild,
-        name: "nodeChild",
+        name: "node",
         path: ":id(1|2)",
       },
     ],
     component: Node,
-    name: "node",
     path: "node",
+    redirect: ({ params: { lang } }) => ({
+      name: "node",
+      params: {
+        id: "1",
+        lang,
+      },
+    }),
   },
 ];

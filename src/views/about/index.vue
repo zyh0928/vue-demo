@@ -1,15 +1,11 @@
 <script lang="ts" setup>
-import useGlobalStore from "#/global";
+import { colors } from "~/variables.json";
 
 interface EnvType {
   bg: string;
   key: string;
   value: string;
 }
-
-const globalStore = useGlobalStore();
-
-const { getRandomColor } = globalStore;
 
 const api = ref("");
 const data = ref<Recordable>({});
@@ -19,13 +15,15 @@ const env = import.meta.env;
 const props = computed(() => {
   const res: EnvType[] = [];
 
-  Object.keys(env).forEach((key) =>
+  Object.keys(env).forEach((key) => {
+    const bg = "bg-" + colors[Math.floor(Math.random() * colors.length)];
+
     res.push({
-      bg: "bg-" + getRandomColor(),
+      bg,
       key,
       value: env[key],
-    }),
-  );
+    });
+  });
 
   return res;
 });

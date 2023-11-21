@@ -40,7 +40,7 @@ let current: Ref<string>;
 
 const locales = langs.map(({ code }) => code);
 
-router.beforeEach(({ name, params }) => {
+router.beforeEach(({ fullPath, name, params }) => {
   if (!setPage) {
     setPage = useGlobalStore().setPage;
   }
@@ -60,11 +60,7 @@ router.beforeEach(({ name, params }) => {
       return;
     }
 
-    router.push({
-      params: {
-        lang: "en",
-      },
-    });
+    router.push(`/en${fullPath}`);
   }
 });
 

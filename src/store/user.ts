@@ -1,9 +1,7 @@
-export default defineStore("user", {
-  actions: {
-    init() {
-      //
-    },
-  },
-  getters: {},
-  state: () => ({}),
+export default defineStore("user", () => {
+  const $reset = () => {};
+
+  return {
+    $reset,
+  };
 });
