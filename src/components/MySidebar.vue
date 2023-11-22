@@ -29,13 +29,17 @@ const list = computed(() => list2tree<MenuType>(props.menus));
 
 <template>
   <v-navigation-drawer :model-value="drawer" :width="sidebarWidth">
-    <v-list nav>
+    <v-list nav density="compact">
       <template v-for="item of list" :key="item.id">
         <v-list-subheader v-if="item.type === 'label'">
           {{ item.name[locale] }}
         </v-list-subheader>
 
-        <v-list-group v-else-if="Array.isArray(item.children)" color="primary">
+        <v-list-group
+          v-else-if="Array.isArray(item.children)"
+          :value="item.id"
+          color="primary"
+        >
           <template #activator="{ props: itemProps }">
             <v-list-item
               v-bind="itemProps"
@@ -49,6 +53,7 @@ const list = computed(() => list2tree<MenuType>(props.menus));
             :key="subitem.id"
             :title="subitem.name[locale]"
             :to="`/${locale}/${item.route}/${subitem.route}`"
+            :value="`/${item.route}/${subitem.route}`"
             color="primary"
           />
         </v-list-group>

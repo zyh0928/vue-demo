@@ -12,9 +12,10 @@ views:
     dog: 汪汪
     girl: 綺羅星（<ゝω・）☆
     title: 哇呜！
+  node:
+    title: 节点
   welcome:
     axis: 轴
     fade: 渐隐
-    slide: 滑动
     title: Vue Demo 主页
     wave: 波浪

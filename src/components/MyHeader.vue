@@ -34,19 +34,20 @@ const baseUrl = import.meta.env.BASE_URL;
           <v-btn v-bind="props" icon="mdi-translate" />
         </template>
 
-        <v-list>
+        <v-list nav density="compact">
           <v-list-item
             v-for="{ code, label } of langs"
             :key="code"
             :active="code === $i18n.locale"
-            :disabled="code === $i18n.locale"
             color="primary"
             @click="$router.push({ params: { lang: code } })"
           >
             <template #prepend>
-              <v-avatar rounded="0">
-                <v-img :src="`${baseUrl}icon/${code}.svg`" />
-              </v-avatar>
+              <v-avatar
+                :image="`${baseUrl}icon/${code}.svg`"
+                density="compact"
+                rounded="0"
+              />
             </template>
 
             <v-list-item-title>{{ label }}</v-list-item-title>

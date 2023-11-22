@@ -60,6 +60,16 @@
       "required": ["cat", "dog", "girl", "title"],
       "type": "object"
     },
+    "Page": {
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "type": "string"
+        }
+      },
+      "required": ["title"],
+      "type": "object"
+    },
     "Validations": {
       "additionalProperties": false,
       "properties": {
@@ -82,11 +92,14 @@
         "image": {
           "$ref": "#/definitions/Image"
         },
+        "node": {
+          "$ref": "#/definitions/Page"
+        },
         "welcome": {
           "$ref": "#/definitions/Welcome"
         }
       },
-      "required": ["about", "error", "image", "welcome"],
+      "required": ["about", "error", "image", "node", "welcome"],
       "type": "object"
     },
     "Welcome": {
@@ -98,7 +111,7 @@
         "fade": {
           "type": "string"
         },
-        "slide": {
+        "rotate": {
           "type": "string"
         },
         "title": {
@@ -108,7 +121,7 @@
           "type": "string"
         }
       },
-      "required": ["axis", "fade", "slide", "title", "wave"],
+      "required": ["axis", "fade", "title", "wave"],
       "type": "object"
     }
   }

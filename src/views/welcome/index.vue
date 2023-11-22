@@ -3,7 +3,7 @@ import anime from "animejs";
 
 import type { AnimeInstance, AnimeParams } from "animejs";
 
-type AnimeType = "wave" | "fade" | "axis" | "slide";
+type AnimeType = "axis" | "wave" | "fade";
 
 interface AnimeOptions {
   changing: boolean;
@@ -26,7 +26,7 @@ const options = reactive<AnimeOptions>({
   paused: !1,
   size: 20,
   total: 300,
-  type: "wave",
+  type: "axis",
 });
 
 const grid = computed(() => [
@@ -45,6 +45,40 @@ const baseAnime = reactive<AnimeParams>({
   endDelay: options.delay,
   targets: ".node",
 });
+
+const axisAnime = computed<AnimeParams>(() => ({
+  ...baseAnime,
+  delay: anime.stagger(100, {
+    from: "center",
+    grid: grid.value,
+    start: options.delay,
+  }),
+  easing: "easeInOutQuad",
+  endDelay: 700,
+  translateX: anime.stagger(10, {
+    axis: "x",
+    from: "center",
+    grid: grid.value,
+  }),
+  translateY: anime.stagger(5, {
+    axis: "y",
+    from: "center",
+    grid: grid.value,
+  }),
+  // eslint-disable-next-line sort-keys-fix/sort-keys-fix, vue/sort-keys
+  rotateZ: [
+    {
+      duration: 3000,
+      easing: "linear",
+      value: 360,
+    },
+    anime.stagger([360, 480], {
+      axis: "x",
+      from: "center",
+      grid: grid.value,
+    }),
+  ],
+}));
 
 const waveAnime = computed<AnimeParams>(() => ({
   ...baseAnime,
@@ -74,75 +108,19 @@ const fadeAnime = computed<AnimeParams>(() => ({
     start: options.delay,
   }),
   easing: "easeInOutSine",
-  opacity: [{ duration: 800, value: 0 }],
-  scale: () => anime.random(4, 0.5),
-  translateX: () => anime.random(100, -100),
-  translateY: () => anime.random(100, -100),
-}));
-
-const axisAnime = computed<AnimeParams>(() => ({
-  ...baseAnime,
-  delay: anime.stagger(100, {
-    from: "center",
-    grid: grid.value,
-    start: options.delay,
-  }),
-  easing: "easeInOutQuad",
-  translateX: anime.stagger(10, {
-    axis: "x",
-    from: "center",
-    grid: grid.value,
-  }),
-  translateY: anime.stagger(5, {
-    axis: "y",
-    from: "center",
-    grid: grid.value,
-  }),
-  // eslint-disable-next-line sort-keys-fix/sort-keys-fix, vue/sort-keys
-  rotateZ: anime.stagger([0, 120], {
-    axis: "x",
-    from: "center",
-    grid: grid.value,
-  }),
-}));
-
-const slideAnime = computed<AnimeParams>(() => ({
-  ...baseAnime,
-  borderRadius: {
-    duration: 3000,
-    easing: "linear",
-    value: [0, "50%"],
-  },
-  delay: anime.stagger(50, {
-    from: "last",
-    grid: grid.value,
-    start: options.delay,
-  }),
-  translateX: [
-    { duration: 1000 },
-    {
-      duration: 1000,
-      value: () => anime.random(-200, 200),
-    },
-  ],
-  translateY: [
-    { duration: 1000 },
-    {
-      duration: 1000,
-      value: () => anime.random(-100, 100),
-    },
-  ],
-  // eslint-disable-next-line sort-keys-fix/sort-keys-fix, vue/sort-keys
-  rotateZ: {
-    duration: 3000,
-    easing: "linear",
-    value: [0, 720],
-  },
+  opacity: { duration: 800, easing: "linear", value: 0 },
+  scale: () => anime.random(2, 0.5),
+  translateX: () => anime.random(50, -50),
+  translateY: () => anime.random(50, -50),
 }));
 // #endregion
 
 const getControl = async () => {
   switch (options.type) {
+    case "axis":
+      control.value = anime(axisAnime.value);
+      break;
+
     case "wave":
       control.value = anime(waveAnime.value);
       break;
@@ -150,16 +128,9 @@ const getControl = async () => {
     case "fade":
       control.value = anime(fadeAnime.value);
       break;
-
-    case "axis":
-      control.value = anime(axisAnime.value);
-      break;
-
-    case "slide":
-      control.value = anime(slideAnime.value);
-      break;
   }
 
+  options.paused = !1;
   control.value.play();
   await control.value.finished;
   await onFinished();
@@ -195,12 +166,13 @@ const toggleAnime = () => {
 };
 
 const stopAnime = () => {
+  options.paused = !0;
   control.value?.restart();
   control.value?.pause();
 };
 
 onMounted(async () => {
-  await changeAnime("wave");
+  await changeAnime("axis");
 });
 </script>
 
@@ -217,17 +189,15 @@ onMounted(async () => {
           variant="text"
           @update:model-value="changeAnime"
         >
+          <v-btn value="axis">{{ $t("views.welcome.axis") }}</v-btn>
+
           <v-btn value="wave">{{ $t("views.welcome.wave") }}</v-btn>
 
           <v-btn value="fade">{{ $t("views.welcome.fade") }}</v-btn>
-
-          <v-btn value="axis">{{ $t("views.welcome.axis") }}</v-btn>
-
-          <v-btn value="slide">{{ $t("views.welcome.slide") }}</v-btn>
         </v-btn-toggle>
 
         <v-btn
-          :color="options.paused ? 'success' : 'error'"
+          :color="options.paused ? 'success' : 'primary'"
           :icon="`mdi-${options.paused ? 'play' : 'pause'}`"
           class="ml-3"
           @click="toggleAnime"
@@ -266,8 +236,6 @@ onMounted(async () => {
           <template #activator="{ props }">
             <v-btn class="mr-3" color="primary" icon="mdi-cog" v-bind="props" />
           </template>
-
-          <div>{{ options.total }}</div>
 
           <v-sheet class="pa-2 pr-4" width="400">
             <v-slider
@@ -316,12 +284,14 @@ onMounted(async () => {
 
     <v-col class="mt-8" cols="12">
       <div :style="boxStyle" class="mx-auto box">
-        <v-sheet
+        <div
           v-for="value in options.total"
           :key="value"
-          :color="options.color"
-          :height="options.size"
-          :width="options.size"
+          :style="{
+            backgroundColor: options.color,
+            height: `${options.size}px`,
+            width: `${options.size}px`,
+          }"
           class="node"
         />
       </div>

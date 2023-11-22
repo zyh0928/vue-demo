@@ -12,9 +12,10 @@ views:
     dog: Yap
     girl: Kira Kira (<ゝω·)☆
     title: Image
+  node:
+    title: Node
   welcome:
     axis: Axis
     fade: Fade
-    slide: Slide
     title: Welcome to Vue Demo
     wave: Wave

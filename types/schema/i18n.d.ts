@@ -1,6 +1,9 @@
-interface About {
-  placeholder: string;
+interface Page {
   title: string;
+}
+
+interface About extends Page {
+  placeholder: string;
 }
 
 interface Error {
@@ -8,18 +11,15 @@ interface Error {
   500: string;
 }
 
-interface Image {
+interface Image extends Page {
   cat: string;
   dog: string;
   girl: string;
-  title: string;
 }
 
-interface Welcome {
+interface Welcome extends Page {
   axis: string;
   fade: string;
-  slide: string;
-  title: string;
   wave: string;
 }
 
@@ -31,16 +31,17 @@ interface Views {
   about: About;
   error: Error;
   image: Image;
+  node: Page;
   welcome: Welcome;
 }
 
-declare interface I18nSchema {
-  validations: Validations;
-  views: Views;
-}
-
-// npx ts-json-schema-generator --path types/schema/i18n.d.ts --type I18nSchema
-// export interface I18nSchema {
+// declare interface I18nSchema {
 //   validations: Validations;
 //   views: Views;
 // }
+
+// pnpx ts-json-schema-generator --path types/schema/i18n.d.ts --type I18nSchema
+export interface I18nSchema {
+  validations: Validations;
+  views: Views;
+}
