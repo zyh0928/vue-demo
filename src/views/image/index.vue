@@ -1,7 +1,19 @@
 <script lang="ts" setup>
+import { useElementSize } from "@vueuse/core";
+
 import { getList as getCats } from "$/cat";
 import { getList as getDogs } from "$/dog";
 import { getList as getGirls } from "$/girl";
+import { modes } from "~/variables.json";
+
+interface State {
+  anime: string;
+  cover: string;
+  list: string[];
+  loading: boolean;
+  mode: number[];
+  type: string;
+}
 
 interface Detail {
   dialog: boolean;
@@ -9,10 +21,18 @@ interface Detail {
   width: number;
 }
 
-const loading = ref(!1);
-const page = ref("girl");
-const cover = ref("");
-const imgs = ref<string[]>([]);
+const tools = ref(null);
+
+const toolSize = useElementSize(tools);
+
+const state = reactive<State>({
+  anime: "",
+  cover: "",
+  list: [],
+  loading: !1,
+  mode: [],
+  type: "girl",
+});
 
 const detail = reactive<Detail>({
   dialog: !1,
@@ -20,39 +40,42 @@ const detail = reactive<Detail>({
   width: 0,
 });
 
-const getImgs = async () => {
-  loading.value = !0;
+const categories = ["girl", "dog", "cat"];
 
-  cover.value = "";
-  imgs.value = [];
+const showCover = computed(() => state.type === "girl");
 
-  switch (page.value) {
+const toolbarSrc = computed(() => {
+  const width = Math.round(toolSize.width.value);
+  const height = Math.round(toolSize.height.value);
+
+  return `https://picsum.photos/${width}/${height}`;
+});
+
+const getImgs = async (type = state.type) => {
+  state.loading = !0;
+  state.cover = "";
+  state.list = [];
+
+  switch (type) {
     case "girl":
-      cover.value = (await getGirls()).url ?? "";
+      state.anime = "";
+      state.cover =
+        (await getGirls({ mode: state.mode.join(",") || void 0 })).url ?? "";
       break;
 
     case "dog":
-      imgs.value = await getDogs();
+      state.mode = [];
+      state.list = await getDogs();
       break;
 
     case "cat":
-      imgs.value = (await getCats()).map(({ url }: Recordable<string>) => url);
+      state.mode = [];
+      state.list = (await getCats()).map(({ url }: Recordable<string>) => url);
       break;
   }
-  loading.value = !1;
+
+  state.loading = !1;
 };
-
-const changePage = async (value: string) => {
-  if (page.value === value) return;
-
-  page.value = value;
-
-  await getImgs();
-};
-
-onMounted(async () => {
-  await getImgs();
-});
 
 const openDetail = (url: string) => {
   if (!url) return;
@@ -67,65 +90,111 @@ const openDetail = (url: string) => {
     detail.dialog = !0;
   });
 };
+
+watch(() => state.type, getImgs);
+
+watch(
+  () => state.mode,
+  async (mode) => {
+    if (state.type !== "girl") return;
+
+    state.loading = !0;
+    state.anime = "";
+    state.cover =
+      (await getGirls({ mode: mode.join(",") || void 0 })).url ?? "";
+    state.loading = !1;
+  },
+);
+
+onMounted(getImgs);
 </script>
 
 <template>
   <div class="box">
-    <v-toolbar>
-      <v-btn
-        :loading="loading"
-        color="primary"
-        icon="mdi-refresh"
-        @click="getImgs"
-      />
+    <v-toolbar :extended="showCover">
+      <template #image>
+        <v-img ref="tools" :src="toolbarSrc" class="bg-on-surface-variant" />
+      </template>
+
+      <template v-if="showCover" #extension>
+        <v-btn-toggle
+          v-model="state.mode"
+          :disabled="state.loading"
+          multiple
+          class="ml-4"
+          color="secondary"
+          density="compact"
+        >
+          <v-btn
+            v-for="{ label, value } of modes"
+            :key="value"
+            :active="!1"
+            :value="value"
+            class="text-none"
+          >
+            {{ label }}
+          </v-btn>
+        </v-btn-toggle>
+      </template>
 
       <v-btn-toggle
-        :disabled="loading"
-        :model-value="page"
+        v-model="state.type"
+        :disabled="state.loading"
         mandatory
-        class="h-100 rounded-0 ml-4"
-        color="primary"
-        variant="text"
-        @update:model-value="changePage"
+        class="ml-4"
+        color="secondary"
+        density="compact"
       >
-        <v-btn class="text-none" value="girl">
-          {{ $t("views.image.girl") }}
+        <v-btn
+          v-for="category in categories"
+          :key="category"
+          :active="!1"
+          :value="category"
+          class="text-none"
+        >
+          {{ $t(`views.image.${category}`) }}
         </v-btn>
-
-        <v-btn value="dog">{{ $t("views.image.dog") }}</v-btn>
-
-        <v-btn value="cat">{{ $t("views.image.cat") }}</v-btn>
       </v-btn-toggle>
+
+      <v-btn
+        :loading="state.loading"
+        class="ml-4"
+        color="secondary"
+        icon="mdi-refresh"
+        variant="flat"
+        @click="getImgs()"
+      />
+
+      <v-btn
+        v-if="showCover"
+        class="ml-4"
+        color="secondary"
+        icon="mdi-eye"
+        variant="flat"
+        @click.stop="openDetail(state.cover)"
+      />
     </v-toolbar>
 
     <div class="box-list">
       <div class="box-list-wrap">
-        <transition
-          v-if="page === 'girl'"
-          enter-active-class="animate__animated animate__jello animate__fast"
-          leave-active-class="animate__animated animate__bounceOut animate__fast"
-          mode="out-in"
+        <v-img
+          v-if="showCover"
+          :class="state.anime"
+          :src="state.cover"
+          height="100%"
+          @load="state.anime = 'animate__animated animate__jello animate__fast'"
         >
-          <v-card
-            v-if="cover"
-            hover
-            class="h-100"
-            @click.stop="openDetail(cover)"
-          >
-            <v-img :src="cover" cover>
-              <template #placeholder>
-                <div class="h-100 d-flex justify-center align-center">
-                  <v-progress-circular
-                    indeterminate
-                    color="primary"
-                    size="96"
-                    width="2"
-                  />
-                </div>
-              </template>
-            </v-img>
-          </v-card>
-        </transition>
+          <template #placeholder>
+            <div class="h-100 d-flex justify-center align-center">
+              <v-progress-circular
+                indeterminate
+                color="primary"
+                size="64"
+                width="2"
+              />
+            </div>
+          </template>
+        </v-img>
 
         <transition-group
           v-else
@@ -134,7 +203,7 @@ const openDetail = (url: string) => {
           tag="div"
         >
           <v-col
-            v-for="(url, index) of imgs"
+            v-for="(url, idx) in state.list"
             :key="url"
             cols="12"
             lg="4"
@@ -155,7 +224,7 @@ const openDetail = (url: string) => {
                 </template>
 
                 <div class="h-100 d-flex justify-end align-end">
-                  <div class="text-h5 card-txt">No. {{ index + 1 }}</div>
+                  <div class="text-h5 card-txt">No. {{ idx + 1 }}</div>
                 </div>
               </v-img>
             </v-card>
@@ -191,7 +260,7 @@ const openDetail = (url: string) => {
       padding: 8px;
       width: 100%;
       height: 100%;
-      overflow: hidden auto;
+      overflow: hidden scroll;
     }
   }
 }

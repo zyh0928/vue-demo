@@ -140,5 +140,35 @@
   ],
   "locale": "en",
   "localeFallback": "en",
+  "modes": [
+    {
+      "label": "微博",
+      "value": 1
+    },
+    {
+      "label": "instagram",
+      "value": 2
+    },
+    {
+      "label": "cos",
+      "value": 3
+    },
+    {
+      "label": "mtcos",
+      "value": 5
+    },
+    {
+      "label": "美腿",
+      "value": 7
+    },
+    {
+      "label": "Coser",
+      "value": 8
+    },
+    {
+      "label": "兔玩",
+      "value": 9
+    }
+  ],
   "sidebarWidth": 240
 }

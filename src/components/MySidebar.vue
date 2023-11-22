@@ -30,39 +30,42 @@ const list = computed(() => list2tree<MenuType>(props.menus));
 <template>
   <v-navigation-drawer :model-value="drawer" :width="sidebarWidth">
     <v-list nav density="compact">
-      <template v-for="item of list" :key="item.id">
-        <v-list-subheader v-if="item.type === 'label'">
-          {{ item.name[locale] }}
+      <template
+        v-for="{ id, type, route, name, children, icon } of list"
+        :key="id"
+      >
+        <v-list-subheader v-if="type === 'label'">
+          {{ name[locale] }}
         </v-list-subheader>
 
         <v-list-group
-          v-else-if="Array.isArray(item.children)"
-          :value="item.id"
+          v-else-if="Array.isArray(children)"
+          :value="id"
           color="primary"
         >
           <template #activator="{ props: itemProps }">
             <v-list-item
               v-bind="itemProps"
-              :prepend-icon="`mdi-${item.icon}`"
-              :title="item.name[locale]"
+              :prepend-icon="`mdi-${icon}`"
+              :title="name[locale]"
             />
           </template>
 
           <v-list-item
-            v-for="subitem of item.children"
+            v-for="subitem of children"
             :key="subitem.id"
             :title="subitem.name[locale]"
-            :to="`/${locale}/${item.route}/${subitem.route}`"
-            :value="`/${item.route}/${subitem.route}`"
+            :to="`/${locale}/${route}/${subitem.route}`"
+            :value="`/${route}/${subitem.route}`"
             color="primary"
           />
         </v-list-group>
 
         <v-list-item
           v-else
-          :prepend-icon="`mdi-${item.icon}`"
-          :title="item.name[locale]"
-          :to="`/${locale}/${item.route}`"
+          :prepend-icon="`mdi-${icon}`"
+          :title="name[locale]"
+          :to="`/${locale}/${route}`"
           color="primary"
         />
       </template>
