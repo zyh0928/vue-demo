@@ -11,13 +11,6 @@ import Vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
   base: loadEnv(mode, process.cwd(), "BASE_URL").BASE_URL,
-  build: {
-    terserOptions: {
-      compress: {
-        drop_console: !0,
-      },
-    },
-  },
   envPrefix: "DEMO_",
   plugins: [
     AutoImport({

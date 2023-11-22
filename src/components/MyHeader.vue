@@ -1,17 +1,31 @@
 <script lang="ts" setup>
+import { useTheme } from "vuetify/lib/framework.mjs";
+
 import useGlobalStore from "#/global";
 import { langs } from "~/variables.json";
 
 defineEmits<{
-  "toggle:dark": [];
   "toggle:drawer": [];
 }>();
 
 const globalStore = useGlobalStore();
+const theme = useTheme();
+
+const baseUrl = import.meta.env.BASE_URL;
 
 const { page } = storeToRefs(globalStore);
 
-const baseUrl = import.meta.env.BASE_URL;
+const toggleTheme = () => {
+  const mode = theme.global.current.value.dark ? "light" : "dark";
+
+  theme.global.name.value = mode;
+
+  localStorage.setItem("theme", mode);
+};
+
+onMounted(() => {
+  theme.global.name.value = localStorage.getItem("theme") ?? "light";
+});
 </script>
 
 <template>
@@ -55,7 +69,7 @@ const baseUrl = import.meta.env.BASE_URL;
         </v-list>
       </v-menu>
 
-      <v-btn icon="mdi-theme-light-dark" @click="$emit('toggle:dark')" />
+      <v-btn icon="mdi-theme-light-dark" @click="toggleTheme" />
     </template>
   </v-app-bar>
 </template>
