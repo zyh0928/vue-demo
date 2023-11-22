@@ -11,6 +11,7 @@ interface Detail {
 
 const loading = ref(!1);
 const page = ref("girl");
+const cover = ref("");
 const imgs = ref<string[]>([]);
 
 const detail = reactive<Detail>({
@@ -21,15 +22,14 @@ const detail = reactive<Detail>({
 
 const getImgs = async () => {
   loading.value = !0;
-  switch (page.value) {
-    case "girl": {
-      const list = Array.from({ length: 8 }, () => getGirls());
 
-      imgs.value = (await Promise.all(list)).map(
-        ({ url }: Recordable<string>) => url,
-      );
+  cover.value = "";
+  imgs.value = [];
+
+  switch (page.value) {
+    case "girl":
+      cover.value = (await getGirls()).url ?? "";
       break;
-    }
 
     case "dog":
       imgs.value = await getDogs();
@@ -55,6 +55,8 @@ onMounted(async () => {
 });
 
 const openDetail = (url: string) => {
+  if (!url) return;
+
   const img = new Image();
 
   img.src = url;
@@ -68,39 +70,69 @@ const openDetail = (url: string) => {
 </script>
 
 <template>
-  <v-row>
-    <v-col cols="12">
-      <v-toolbar>
-        <v-btn
-          :loading="loading"
-          color="primary"
-          icon="mdi-refresh"
-          @click="getImgs"
-        />
+  <div class="box">
+    <v-toolbar>
+      <v-btn
+        :loading="loading"
+        color="primary"
+        icon="mdi-refresh"
+        @click="getImgs"
+      />
 
-        <v-btn-toggle
-          :disabled="loading"
-          :model-value="page"
-          mandatory
-          class="rounded-0"
-          color="primary"
-          variant="text"
-          @update:model-value="changePage"
+      <v-btn-toggle
+        :disabled="loading"
+        :model-value="page"
+        mandatory
+        class="h-100 rounded-0 ml-4"
+        color="primary"
+        variant="text"
+        @update:model-value="changePage"
+      >
+        <v-btn class="text-none" value="girl">
+          {{ $t("views.image.girl") }}
+        </v-btn>
+
+        <v-btn value="dog">{{ $t("views.image.dog") }}</v-btn>
+
+        <v-btn value="cat">{{ $t("views.image.cat") }}</v-btn>
+      </v-btn-toggle>
+    </v-toolbar>
+
+    <div class="box-list">
+      <div class="box-list-wrap">
+        <transition
+          v-if="page === 'girl'"
+          enter-active-class="animate__animated animate__jello animate__fast"
+          leave-active-class="animate__animated animate__bounceOut animate__fast"
+          mode="out-in"
         >
-          <v-btn class="text-none" value="girl">
-            {{ $t("views.image.girl") }}
-          </v-btn>
+          <v-card
+            v-if="cover"
+            hover
+            class="h-100"
+            @click.stop="openDetail(cover)"
+          >
+            <v-img :src="cover" cover>
+              <template #placeholder>
+                <div class="h-100 d-flex justify-center align-center">
+                  <v-progress-circular
+                    indeterminate
+                    color="primary"
+                    size="96"
+                    width="2"
+                  />
+                </div>
+              </template>
+            </v-img>
+          </v-card>
+        </transition>
 
-          <v-btn value="dog">{{ $t("views.image.dog") }}</v-btn>
-
-          <v-btn value="cat">{{ $t("views.image.cat") }}</v-btn>
-        </v-btn-toggle>
-      </v-toolbar>
-    </v-col>
-
-    <v-col cols="12">
-      <v-container v-if="imgs.length">
-        <transition-group class="v-row v-row--dense" name="list" tag="div">
+        <transition-group
+          v-else
+          class="v-row v-row--dense"
+          name="list"
+          tag="div"
+        >
           <v-col
             v-for="(url, index) of imgs"
             :key="url"
@@ -110,7 +142,7 @@ const openDetail = (url: string) => {
             xl="3"
           >
             <v-card hover @click.stop="openDetail(url)">
-              <v-img :src="url" cover aspect-ratio="1">
+              <v-img :aspect-ratio="4 / 3" :src="url" cover>
                 <template #placeholder>
                   <div class="h-100 d-flex justify-center align-center">
                     <v-progress-circular
@@ -129,8 +161,8 @@ const openDetail = (url: string) => {
             </v-card>
           </v-col>
         </transition-group>
-      </v-container>
-    </v-col>
+      </div>
+    </div>
 
     <v-dialog
       v-model="detail.dialog"
@@ -142,10 +174,28 @@ const openDetail = (url: string) => {
         <v-img :src="detail.url" cover />
       </v-card>
     </v-dialog>
-  </v-row>
+  </div>
 </template>
 
 <style lang="scss" scoped>
+.box {
+  display: grid;
+  grid-template: auto 1fr / 1fr;
+  height: 100%;
+
+  &-list {
+    position: relative;
+
+    &-wrap {
+      position: absolute;
+      padding: 8px;
+      width: 100%;
+      height: 100%;
+      overflow: hidden auto;
+    }
+  }
+}
+
 .card-txt {
   margin: 16px;
   color: rgb(var(--v-theme-background));
