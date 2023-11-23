@@ -4,9 +4,7 @@ import { useTheme } from "vuetify/lib/framework.mjs";
 import useGlobalStore from "#/global";
 import { langs } from "~/variables.json";
 
-defineEmits<{
-  "toggle:drawer": [];
-}>();
+defineEmits<{ toggle: [] }>();
 
 const globalStore = useGlobalStore();
 const theme = useTheme();
@@ -31,7 +29,7 @@ onMounted(() => {
 <template>
   <v-app-bar color="primary" density="compact">
     <template #prepend>
-      <v-app-bar-nav-icon @click="$emit('toggle:drawer')" />
+      <v-app-bar-nav-icon @click="$emit('toggle')" />
     </template>
 
     <v-app-bar-title>

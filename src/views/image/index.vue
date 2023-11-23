@@ -1,14 +1,18 @@
 <script lang="ts" setup>
 import { useElementSize } from "@vueuse/core";
+import { useDisplay } from "vuetify/lib/framework.mjs";
 
 import { getList as getCats } from "$/cat";
 import { getList as getDogs } from "$/dog";
 import { getList as getGirls } from "$/girl";
-import { modes } from "~/variables.json";
+import { animations, modes } from "~/variables.json";
+
+import CoverImg from "./components/CoverImg.vue";
+import ListImg from "./components/ListImg.vue";
 
 interface State {
-  anime: string;
-  cover: string;
+  anime: string[];
+  cover?: string;
   list: string[];
   loading: boolean;
   mode: number[];
@@ -24,14 +28,14 @@ interface Detail {
 const tools = ref(null);
 
 const toolSize = useElementSize(tools);
+const { mobile } = useDisplay();
 
 const state = reactive<State>({
-  anime: "",
-  cover: "",
+  anime: ["animate__animated", "animate__fast"],
   list: [],
   loading: !1,
   mode: [],
-  type: "girl",
+  type: "dog",
 });
 
 const detail = reactive<Detail>({
@@ -51,25 +55,49 @@ const toolbarSrc = computed(() => {
   return `https://picsum.photos/${width}/${height}`;
 });
 
+const getCover = async () => {
+  const mode = state.mode.join(",") || void 0;
+
+  state.cover = (await getGirls({ mode })).url;
+
+  if (!state.cover) {
+    state.cover = "/undefined";
+  }
+};
+
+const coverLoad = () => {
+  const idx = Math.floor(Math.random() * animations.length);
+
+  state.anime.splice(2, 1, `animate__${animations[idx]}`);
+};
+
+const coverEnd = () => {
+  state.anime.splice(2);
+  state.loading = !1;
+};
+
 const getImgs = async (type = state.type) => {
   state.loading = !0;
-  state.cover = "";
-  state.list = [];
 
   switch (type) {
     case "girl":
-      state.anime = "";
-      state.cover =
-        (await getGirls({ mode: state.mode.join(",") || void 0 })).url ?? "";
-      break;
+      state.list = [];
+      if (!state.cover) {
+        getCover();
+      } else {
+        state.anime.push("animate__fadeOut");
+      }
+      return;
 
     case "dog":
       state.mode = [];
+      state.cover = "";
       state.list = await getDogs();
       break;
 
     case "cat":
       state.mode = [];
+      state.cover = "";
       state.list = (await getCats()).map(({ url }: Recordable<string>) => url);
       break;
   }
@@ -77,13 +105,11 @@ const getImgs = async (type = state.type) => {
   state.loading = !1;
 };
 
-const openDetail = (url: string) => {
+const openDetail = (url?: string) => {
   if (!url) return;
 
   const img = new Image();
-
   img.src = url;
-
   img.addEventListener("load", () => {
     detail.width = img.width;
     detail.url = url;
@@ -95,14 +121,10 @@ watch(() => state.type, getImgs);
 
 watch(
   () => state.mode,
-  async (mode) => {
+  () => {
     if (state.type !== "girl") return;
 
-    state.loading = !0;
-    state.anime = "";
-    state.cover =
-      (await getGirls({ mode: mode.join(",") || void 0 })).url ?? "";
-    state.loading = !1;
+    getImgs();
   },
 );
 
@@ -126,7 +148,9 @@ onMounted(getImgs);
           density="compact"
         >
           <v-btn
-            v-for="{ label, value } of modes"
+            v-for="{ label, value } of modes.filter(
+              ({ mobile: show = !0 }) => !mobile || show,
+            )"
             :key="value"
             :active="!1"
             :value="value"
@@ -164,83 +188,36 @@ onMounted(getImgs);
         variant="flat"
         @click="getImgs()"
       />
-
-      <v-btn
-        v-if="showCover"
-        class="ml-4"
-        color="secondary"
-        icon="mdi-eye"
-        variant="flat"
-        @click.stop="openDetail(state.cover)"
-      />
     </v-toolbar>
 
     <div class="box-list">
       <div class="box-list-wrap">
-        <v-img
+        <cover-img
           v-if="showCover"
-          :class="state.anime"
-          :src="state.cover"
-          height="100%"
-          @load="state.anime = 'animate__animated animate__jello animate__fast'"
-        >
-          <template #placeholder>
-            <div class="h-100 d-flex justify-center align-center">
-              <v-progress-circular
-                indeterminate
-                color="primary"
-                size="64"
-                width="2"
-              />
-            </div>
-          </template>
-        </v-img>
+          :anime="state.anime"
+          :url="state.cover"
+          @cover-end="coverEnd"
+          @cover-load="coverLoad"
+          @get-cover="getCover"
+          @open-detail="openDetail"
+        />
 
-        <transition-group
-          v-else
-          class="v-row v-row--dense"
-          name="list"
-          tag="div"
-        >
-          <v-col
-            v-for="(url, idx) in state.list"
-            :key="url"
-            cols="12"
-            lg="4"
-            sm="6"
-            xl="3"
-          >
-            <v-card hover @click.stop="openDetail(url)">
-              <v-img :aspect-ratio="4 / 3" :src="url" cover>
-                <template #placeholder>
-                  <div class="h-100 d-flex justify-center align-center">
-                    <v-progress-circular
-                      indeterminate
-                      color="primary"
-                      size="48"
-                      width="2"
-                    />
-                  </div>
-                </template>
-
-                <div class="h-100 d-flex justify-end align-end">
-                  <div class="text-h5 card-txt">No. {{ idx + 1 }}</div>
-                </div>
-              </v-img>
-            </v-card>
+        <v-row v-else dense>
+          <v-col v-for="(url, idx) in state.list" :key="url" cols="12" sm="3">
+            <list-img :index="idx" :url="url" @open-detail="openDetail" />
           </v-col>
-        </transition-group>
+        </v-row>
       </div>
     </div>
 
     <v-dialog
       v-model="detail.dialog"
       :width="detail.width"
-      max-height="100vh"
-      max-width="1200"
+      max-height="100%"
+      max-width="100%"
     >
-      <v-card>
-        <v-img :src="detail.url" cover />
+      <v-card rounded="0" @click.stop="detail.dialog = !1">
+        <v-img :src="detail.url" />
       </v-card>
     </v-dialog>
   </div>
@@ -263,27 +240,5 @@ onMounted(getImgs);
       overflow: hidden scroll;
     }
   }
-}
-
-.card-txt {
-  margin: 16px;
-  color: rgb(var(--v-theme-background));
-  text-shadow: 0 0 2px rgba(var(--v-theme-on-background), 0.7);
-}
-
-.list-move,
-.list-enter-active,
-.list-leave-active {
-  transition: all 0.5s ease;
-}
-
-.list-enter-from,
-.list-leave-to {
-  transform: translateX(30px);
-  opacity: 0;
-}
-
-.list-leave-active {
-  position: absolute;
 }
 </style>

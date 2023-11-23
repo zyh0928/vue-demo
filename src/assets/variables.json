@@ -1,4 +1,15 @@
 {
+  "animations": [
+    "bounce",
+    "pulse",
+    "rubberBand",
+    "headShake",
+    "swing",
+    "tada",
+    "wobble",
+    "jello",
+    "heartBeat"
+  ],
   "colors": [
     "red",
     "pink",
@@ -131,7 +142,7 @@
   "langs": [
     {
       "code": "zh",
-      "label": "简体中文"
+      "label": "中文"
     },
     {
       "code": "en",
@@ -143,14 +154,16 @@
   "modes": [
     {
       "label": "微博",
+      "mobile": false,
       "value": 1
     },
     {
-      "label": "instagram",
+      "label": "ins",
       "value": 2
     },
     {
-      "label": "cos",
+      "label": "cosplay",
+      "mobile": false,
       "value": 3
     },
     {
@@ -162,7 +175,7 @@
       "value": 7
     },
     {
-      "label": "Coser",
+      "label": "coser",
       "value": 8
     },
     {

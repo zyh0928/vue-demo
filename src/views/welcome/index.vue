@@ -20,12 +20,12 @@ const control = ref<Nullable<AnimeInstance>>();
 
 const options = reactive<AnimeOptions>({
   changing: !1,
-  col: 30,
+  col: 20,
   color: "#ab3b3a",
   delay: 300,
   paused: !1,
   size: 20,
-  total: 300,
+  total: 200,
   type: "axis",
 });
 
@@ -184,8 +184,9 @@ onMounted(async () => {
           :disabled="options.changing || options.paused"
           :model-value="options.type"
           mandatory
-          class="h-100 rounded-0"
+          class="h-100"
           color="primary"
+          rounded="0"
           variant="text"
           @update:model-value="changeAnime"
         >

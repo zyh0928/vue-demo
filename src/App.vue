@@ -7,10 +7,6 @@ const { locale } = useI18n();
 
 const drawer = ref(!0);
 
-const toggleDrawer = () => {
-  drawer.value = !drawer.value;
-};
-
 watch(
   () => route.params.lang,
   (lang) => {
@@ -24,7 +20,7 @@ watch(
 
 <template>
   <v-app>
-    <my-header @toggle:drawer="toggleDrawer" />
+    <my-header @toggle="drawer = !drawer" />
 
     <my-sidebar :drawer="drawer" />
 
