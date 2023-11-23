@@ -47,9 +47,15 @@ const load = () => {
 </template>
 
 <style lang="scss" scoped>
+$border-color: rgba(var(--v-theme-on-background));
+
 .card-txt {
   margin: 16px;
   color: rgb(var(--v-theme-background));
-  text-shadow: 0 0 2px rgba(var(--v-theme-on-background), 0.7);
+  text-shadow:
+    $border-color 1px 0 0,
+    $border-color 0 1px 0,
+    $border-color -1px 0 0,
+    $border-color 0 -1px 0;
 }
 </style>

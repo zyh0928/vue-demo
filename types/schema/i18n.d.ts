@@ -15,6 +15,7 @@ interface Image extends Page {
   cat: string;
   dog: string;
   girl: string;
+  list: string;
 }
 
 interface Welcome extends Page {
@@ -35,13 +36,13 @@ interface Views {
   welcome: Welcome;
 }
 
-// declare interface I18nSchema {
-//   validations: Validations;
-//   views: Views;
-// }
-
-// pnpx ts-json-schema-generator --path types/schema/i18n.d.ts --type I18nSchema
-export interface I18nSchema {
+declare interface I18nSchema {
   validations: Validations;
   views: Views;
 }
+
+// pnpx ts-json-schema-generator --path types/schema/i18n.d.ts --type I18nSchema
+// export interface I18nSchema {
+//   validations: Validations;
+//   views: Views;
+// }

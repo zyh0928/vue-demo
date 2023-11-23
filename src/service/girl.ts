@@ -7,3 +7,10 @@ export const getList = async (params?: Recordable<GenericScalar | undefined>) =>
       ...params,
     },
   })) ?? {};
+
+export const getView = async (id: string) =>
+  await girlRequest.get(`/view/url/${id}`, {
+    headers: {
+      contentType: "application/octet-stream",
+    },
+  });

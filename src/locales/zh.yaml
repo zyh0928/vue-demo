@@ -8,9 +8,10 @@ views:
     "404": 页面未找到
     "500": 内部服务器错误
   image:
-    cat: 喵星人
-    dog: 汪汪
-    girl: 綺羅星（<ゝω・）☆
+    cat: ↀωↀ
+    dog: V●ᴥ●V
+    girl: (*´∀`)~♥
+    list: (❛◡❛✿)
     title: 哇呜！
   node:
     title: 节点

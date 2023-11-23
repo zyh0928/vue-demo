@@ -4,7 +4,7 @@ import { useDisplay } from "vuetify/lib/framework.mjs";
 
 import { getList as getCats } from "$/cat";
 import { getList as getDogs } from "$/dog";
-import { getList as getGirls } from "$/girl";
+import { getList as getGirls, getView } from "$/girl";
 import { animations, modes } from "~/variables.json";
 
 import CoverImg from "./components/CoverImg.vue";
@@ -17,6 +17,7 @@ interface State {
   loading: boolean;
   mode: number[];
   type: string;
+  view: string;
 }
 
 interface Detail {
@@ -35,8 +36,12 @@ const state = reactive<State>({
   list: [],
   loading: !1,
   mode: [],
-  type: "dog",
+  type: "list",
+  view: "mjx",
 });
+
+const listCache = ref<string[]>([]);
+// const listPage = ref(1);
 
 const detail = reactive<Detail>({
   dialog: !1,
@@ -44,9 +49,32 @@ const detail = reactive<Detail>({
   width: 0,
 });
 
-const categories = ["girl", "dog", "cat"];
+const categories = ["girl", "list", "dog", "cat"];
 
-const showCover = computed(() => state.type === "girl");
+const views = ref([
+  {
+    label: "mjx",
+    value: "mjx",
+  },
+  {
+    label: "tuwan",
+    value: "tuwan",
+  },
+  {
+    label: "1628517708",
+    value: "1628517708",
+  },
+  {
+    label: "1624387144",
+    value: "1624387144",
+  },
+  {
+    label: "1631028859",
+    value: "1631028859",
+  },
+]);
+
+const showEx = computed(() => state.type === "girl" || state.type === "list");
 
 const toolbarSrc = computed(() => {
   const width = Math.round(toolSize.width.value);
@@ -54,6 +82,11 @@ const toolbarSrc = computed(() => {
 
   return `https://picsum.photos/${width}/${height}`;
 });
+
+// const total = computed(() => {
+//   if (state.type !== "list") return 0;
+//   return Math.ceil(listCache.value.length / 20);
+// });
 
 const getCover = async () => {
   const mode = state.mode.join(",") || void 0;
@@ -79,9 +112,26 @@ const coverEnd = () => {
 const getImgs = async (type = state.type) => {
   state.loading = !0;
 
+  if ((type === "girl" || type === "list") && state.mode.length) {
+    state.list = [];
+  }
+
+  if (type !== "girl") {
+    if (state.cover) {
+      state.cover = "";
+    }
+
+    if (state.mode.length) {
+      state.mode = [];
+    }
+  }
+
+  if (type !== "list" && listCache.value.length) {
+    listCache.value = [];
+  }
+
   switch (type) {
     case "girl":
-      state.list = [];
       if (!state.cover) {
         getCover();
       } else {
@@ -89,15 +139,27 @@ const getImgs = async (type = state.type) => {
       }
       return;
 
+    case "list": {
+      const file = (await getView(state.view)) ?? "";
+      const imgs: string[] = file.split(/[(\r\n)\r\n]+/);
+
+      listCache.value = imgs.filter((img) => img.startsWith("http"));
+
+      const title = imgs.find((img) => img.startsWith("标题"));
+      if (!title) break;
+
+      const item = views.value.find(({ label }) => label === state.view);
+      if (!item) break;
+
+      item.label = `${title.substring(5)} (${listCache.value.length})`;
+      break;
+    }
+
     case "dog":
-      state.mode = [];
-      state.cover = "";
       state.list = await getDogs();
       break;
 
     case "cat":
-      state.mode = [];
-      state.cover = "";
       state.list = (await getCats()).map(({ url }: Recordable<string>) => url);
       break;
   }
@@ -120,6 +182,21 @@ const openDetail = (url?: string) => {
 watch(() => state.type, getImgs);
 
 watch(
+  () => state.view,
+  () => {
+    if (state.type !== "list") return;
+
+    getImgs();
+  },
+);
+
+watch(listCache, () => {
+  if (state.type !== "list") return;
+
+  state.list = listCache.value.slice(0, 20);
+});
+
+watch(
   () => state.mode,
   () => {
     if (state.type !== "girl") return;
@@ -133,17 +210,18 @@ onMounted(getImgs);
 
 <template>
   <div class="box">
-    <v-toolbar :extended="showCover">
+    <v-toolbar :extended="showEx">
       <template #image>
         <v-img ref="tools" :src="toolbarSrc" class="bg-on-surface-variant" />
       </template>
 
-      <template v-if="showCover" #extension>
+      <template v-if="showEx" #extension>
         <v-btn-toggle
+          v-if="state.type === 'girl'"
           v-model="state.mode"
           :disabled="state.loading"
           multiple
-          class="ml-4"
+          class="ml-2"
           color="secondary"
           density="compact"
         >
@@ -159,13 +237,42 @@ onMounted(getImgs);
             {{ label }}
           </v-btn>
         </v-btn-toggle>
+
+        <v-slide-group v-else v-model="state.view" mandatory>
+          <template #prev>
+            <v-icon class="arrow">mdi-chevron-left</v-icon>
+          </template>
+
+          <template #next>
+            <v-icon class="arrow">mdi-chevron-right</v-icon>
+          </template>
+
+          <v-slide-group-item
+            v-for="{ value, label } in views"
+            :key="value"
+            v-slot="{ isSelected, toggle }"
+            :value="value"
+          >
+            <v-btn
+              :color="isSelected ? 'secondary' : void 0"
+              :disabled="state.loading"
+              rounded
+              class="ma-2"
+              size="small"
+              variant="elevated"
+              @click="toggle"
+            >
+              {{ label }}
+            </v-btn>
+          </v-slide-group-item>
+        </v-slide-group>
       </template>
 
       <v-btn-toggle
         v-model="state.type"
         :disabled="state.loading"
         mandatory
-        class="ml-4"
+        class="ml-2"
         color="secondary"
         density="compact"
       >
@@ -181,10 +288,12 @@ onMounted(getImgs);
       </v-btn-toggle>
 
       <v-btn
+        v-if="state.type !== 'list'"
         :loading="state.loading"
         class="ml-4"
         color="secondary"
         icon="mdi-refresh"
+        size="small"
         variant="flat"
         @click="getImgs()"
       />
@@ -193,7 +302,7 @@ onMounted(getImgs);
     <div class="box-list">
       <div class="box-list-wrap">
         <cover-img
-          v-if="showCover"
+          v-if="state.type === 'girl'"
           :anime="state.anime"
           :url="state.cover"
           @cover-end="coverEnd"
@@ -224,6 +333,8 @@ onMounted(getImgs);
 </template>
 
 <style lang="scss" scoped>
+$border-color: rgba(var(--v-theme-on-background));
+
 .box {
   display: grid;
   grid-template: auto 1fr / 1fr;
@@ -240,5 +351,14 @@ onMounted(getImgs);
       overflow: hidden scroll;
     }
   }
+}
+
+.arrow {
+  color: rgb(var(--v-theme-background));
+  text-shadow:
+    $border-color 1px 0 0,
+    $border-color 0 1px 0,
+    $border-color -1px 0 0,
+    $border-color 0 -1px 0;
 }
 </style>

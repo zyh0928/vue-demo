@@ -53,11 +53,14 @@
         "girl": {
           "type": "string"
         },
+        "list": {
+          "type": "string"
+        },
         "title": {
           "type": "string"
         }
       },
-      "required": ["cat", "dog", "girl", "title"],
+      "required": ["cat", "dog", "girl", "list", "title"],
       "type": "object"
     },
     "Page": {
@@ -109,9 +112,6 @@
           "type": "string"
         },
         "fade": {
-          "type": "string"
-        },
-        "rotate": {
           "type": "string"
         },
         "title": {
