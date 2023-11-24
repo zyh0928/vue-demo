@@ -7,10 +7,10 @@ interface EnvType {
   value: string;
 }
 
+const env = import.meta.env;
+
 const api = ref("");
 const data = ref<Recordable>({});
-
-const env = import.meta.env;
 
 const props = computed(() => {
   const res: EnvType[] = [];
@@ -46,15 +46,30 @@ const sendRequest = async () => {
     data.value = res;
   }
 };
+
+// ("animate__infinite");
 </script>
 
 <template>
   <v-row>
-    <v-col class="text-h3 text-primary" cols="12">
-      {{ $t("views.about.title") }}
+    <v-col cols="12">
+      <div class="text-h3 text-primary pt-6 px-6">
+        {{ $t("views.about.title") }}
+      </div>
     </v-col>
 
     <v-col cols="4">
+      <div
+        v-for="({ key, value, bg }, idx) of props"
+        :key="key"
+        :class="[idx ? 'mt-4' : '', bg]"
+        class="text-h6 rounded-e-pill"
+      >
+        {{ key }}: {{ value }}
+      </div>
+    </v-col>
+
+    <v-col cols="8">
       <v-text-field
         v-model="api"
         :placeholder="$t('views.about.placeholder')"
@@ -68,31 +83,7 @@ const sendRequest = async () => {
         variant="underlined"
         @click:append="sendRequest"
       />
-
-      <v-row>
-        <template v-for="({ key, value, bg }, idx) of props" :key="`env${key}`">
-          <v-col
-            :class="[idx ? 'mt-4' : '', bg]"
-            class="text-end env-key"
-            cols="6"
-          >
-            <span v-text="key" />
-            <span class="ml-2">:</span>
-          </v-col>
-
-          <v-col
-            :class="[idx ? 'mt-4' : '', bg]"
-            class="rounded-e-pill env-value"
-            cols="6"
-          >
-            <span v-text="value" />
-          </v-col>
-        </template>
-      </v-row>
-    </v-col>
-
-    <v-col class="pl-8" cols="8">
-      <pre class="text-h6 elevation-9 preview">{{ data }}</pre>
+      <pre class="elevation-9 bg-info preview">{{ data }}</pre>
     </v-col>
   </v-row>
 </template>
@@ -112,21 +103,10 @@ const sendRequest = async () => {
   }
 }
 
-// .env {
-//   @for $i from 1 through 20 {
-//     &-value:nth-of-type(#{$i}) {
-//       animation: slide 4s infinite 200ms * $i linear;
-//     }
-//   }
-// }
-
 .preview {
-  border-radius: 24px;
-  background: rgb(var(--v-theme-info));
-  padding: 24px;
+  border-radius: 12px;
+  padding: 12px;
   overflow: hidden;
-  color: rgb(var(--v-theme-on-info));
-  font-weight: 300;
   text-overflow: ellipsis;
 }
 </style>

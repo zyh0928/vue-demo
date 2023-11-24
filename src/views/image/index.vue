@@ -26,6 +26,8 @@ interface Detail {
   width: number;
 }
 
+type InfiniteDone = (state: "ok" | "empty" | "loading" | "error") => void;
+
 const tools = ref(null);
 
 const toolSize = useElementSize(tools);
@@ -36,12 +38,12 @@ const state = reactive<State>({
   list: [],
   loading: !1,
   mode: [],
-  type: "list",
+  type: "dog",
   view: "mjx",
 });
 
 const listCache = ref<string[]>([]);
-// const listPage = ref(1);
+const listPage = ref(1);
 
 const detail = reactive<Detail>({
   dialog: !1,
@@ -83,11 +85,6 @@ const toolbarSrc = computed(() => {
   return `https://picsum.photos/${width}/${height}`;
 });
 
-// const total = computed(() => {
-//   if (state.type !== "list") return 0;
-//   return Math.ceil(listCache.value.length / 20);
-// });
-
 const getCover = async () => {
   const mode = state.mode.join(",") || void 0;
 
@@ -112,7 +109,7 @@ const coverEnd = () => {
 const getImgs = async (type = state.type) => {
   state.loading = !0;
 
-  if ((type === "girl" || type === "list") && state.mode.length) {
+  if (type === "girl" && state.list.length) {
     state.list = [];
   }
 
@@ -155,13 +152,23 @@ const getImgs = async (type = state.type) => {
       break;
     }
 
-    case "dog":
-      state.list = await getDogs();
-      break;
+    case "dog": {
+      const dogs = await getDogs();
 
-    case "cat":
-      state.list = (await getCats()).map(({ url }: Recordable<string>) => url);
+      state.list.push(...dogs);
+
+      listPage.value++;
       break;
+    }
+
+    case "cat": {
+      const cats = (await getCats()).map(({ url }: Recordable<string>) => url);
+
+      state.list.push(...cats);
+
+      listPage.value++;
+      break;
+    }
   }
 
   state.loading = !1;
@@ -179,6 +186,14 @@ const openDetail = (url?: string) => {
   });
 };
 
+const load = async ({ done }: { done: InfiniteDone }) => {
+  if (listPage.value > 1) {
+    await getImgs(state.type);
+  }
+
+  done("error");
+};
+
 watch(() => state.type, getImgs);
 
 watch(
@@ -186,6 +201,7 @@ watch(
   () => {
     if (state.type !== "list") return;
 
+    state.list = [];
     getImgs();
   },
 );
@@ -300,7 +316,7 @@ onMounted(getImgs);
     </v-toolbar>
 
     <div class="box-list">
-      <div class="box-list-wrap">
+      <v-infinite-scroll class="box-list-wrap" @load="load">
         <cover-img
           v-if="state.type === 'girl'"
           :anime="state.anime"
@@ -312,11 +328,18 @@ onMounted(getImgs);
         />
 
         <v-row v-else dense>
-          <v-col v-for="(url, idx) in state.list" :key="url" cols="12" sm="3">
+          <v-col
+            v-for="(url, idx) in state.list"
+            :key="url"
+            cols="12"
+            lg="4"
+            sm="6"
+            xl="3"
+          >
             <list-img :index="idx" :url="url" @open-detail="openDetail" />
           </v-col>
         </v-row>
-      </div>
+      </v-infinite-scroll>
     </div>
 
     <v-dialog

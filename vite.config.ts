@@ -62,6 +62,7 @@ export default defineConfig(({ mode }) => ({
     },
   },
   server: {
+    host: !0,
     port: 9029,
     proxy: {
       "/cat-api": {

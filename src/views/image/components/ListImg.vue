@@ -21,7 +21,7 @@ const load = () => {
 
 <template>
   <v-card :class="anime" hover @click.stop="$emit('openDetail', url)">
-    <v-img :aspect-ratio="4 / 3" :src="url" cover @load="load">
+    <v-img :src="url" cover aspect-ratio="1" @load="load">
       <template #placeholder>
         <div class="h-100 d-flex justify-center align-center">
           <v-progress-circular

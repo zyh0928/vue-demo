@@ -1,4 +1,4 @@
-import { girlRequest } from "./request";
+import { corsRequest, girlRequest } from "./request";
 
 export const getList = async (params?: Recordable<GenericScalar | undefined>) =>
   (await girlRequest.get("/api/", {
@@ -8,9 +8,8 @@ export const getList = async (params?: Recordable<GenericScalar | undefined>) =>
     },
   })) ?? {};
 
-export const getView = async (id: string) =>
-  await girlRequest.get(`/view/url/${id}`, {
-    headers: {
-      contentType: "application/octet-stream",
-    },
-  });
+export const getView = async (id: string) => {
+  const code = encodeURIComponent(`https://3650000.xyz/view/url/${id}`);
+
+  return await corsRequest.get(code);
+};

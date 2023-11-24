@@ -7,6 +7,11 @@ const catRequest = extend({
   timeout,
 });
 
+const corsRequest = extend({
+  prefix: "https://corsproxy.io/?",
+  timeout,
+});
+
 const dogRequest = extend({
   prefix: import.meta.env.DEMO_DOG_API,
   timeout,
@@ -25,4 +30,4 @@ const jrscRequest = extend({
   timeout,
 });
 
-export { catRequest, dogRequest, girlRequest, jrscRequest };
+export { catRequest, corsRequest, dogRequest, girlRequest, jrscRequest };
