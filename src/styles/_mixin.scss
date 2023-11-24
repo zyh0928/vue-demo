@@ -1,4 +1,11 @@
-@mixin size($width, $height: $width) {
-  width: $width;
-  height: $height;
+@mixin outline-font(
+  $color: rgb(var(--v-theme-background)),
+  $border-color: rgba(var(--v-theme-on-background))
+) {
+  color: $color;
+  text-shadow:
+    $border-color 1px 0 0,
+    $border-color 0 1px 0,
+    $border-color -1px 0 0,
+    $border-color 0 -1px 0;
 }

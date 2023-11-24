@@ -75,11 +75,6 @@ export default defineConfig(({ mode }) => ({
         rewrite: (path) => path.replace(/^\/dog-api/, ""),
         target: "https://shibe.online/api",
       },
-      "/girl-api": {
-        changeOrigin: !0,
-        rewrite: (path) => path.replace(/^\/girl-api/, ""),
-        target: "https://3650000.xyz",
-      },
       "/jrsc-api": {
         changeOrigin: !0,
         rewrite: (path) => path.replace(/^\/jrsc-api/, ""),

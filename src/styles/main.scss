@@ -6,6 +6,12 @@
   )
 );
 
+@import "./mixin";
+
+.outline-font {
+  @include outline-font;
+}
+
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;

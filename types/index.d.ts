@@ -20,14 +20,10 @@ declare global {
   }
 
   type OptionType<
-    ValueType = string,
+    ValueType = GenericScalar,
     V extends string | undefined = "value",
     L extends string | undefined = "label",
-  > = {
-    [key in V]: ValueType;
-  } & {
-    [K in L]: string;
-  } & {
+  > = { [key in V]: ValueType } & { [K in L]: string } & {
     disabled?: boolean;
   };
 }

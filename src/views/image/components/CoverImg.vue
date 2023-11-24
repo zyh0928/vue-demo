@@ -7,15 +7,15 @@ interface Props {
   mode: number[];
 }
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {});
 
 const emit = defineEmits<{
-  openDetail: [src?: string];
+  open: [src?: string];
   "update:loading": [value: boolean];
 }>();
 
 const src = ref<string | undefined>();
-const anime = ref(["animate__animated", "animate__fast"]);
+const anime = ref("");
 
 const setCover = async () => {
   const params = {
@@ -30,7 +30,7 @@ const getCover = () => {
 
   emit("update:loading", !0);
   if (src.value) {
-    anime.value.push("animate__fadeOut");
+    anime.value = "animate__fadeOut";
     return;
   }
 
@@ -39,11 +39,11 @@ const getCover = () => {
 
 const coverLoad = () => {
   const idx = Math.floor(Math.random() * animations.length);
-  anime.value.splice(2, 1, `animate__${animations[idx]}`);
+  anime.value = `animate__${animations[idx]}`;
 };
 
 const coverEnd = () => {
-  anime.value.splice(2);
+  anime.value = "";
   emit("update:loading", !1);
 };
 
@@ -57,6 +57,7 @@ const coverAnimeEnd = async ({ animationName: name }: AnimationEvent) => {
 };
 
 watch(() => props.mode, getCover);
+
 onMounted(getCover);
 </script>
 
@@ -64,7 +65,7 @@ onMounted(getCover);
   <v-img
     :class="anime"
     :src="src"
-    class="cover-img"
+    class="animate__animated animate__fast cover-img"
     @animationend="coverAnimeEnd"
     @click.stop="getCover"
     @error="coverEnd"
@@ -72,12 +73,7 @@ onMounted(getCover);
   >
     <template #placeholder>
       <div class="h-100 d-flex justify-center align-center">
-        <v-progress-circular
-          indeterminate
-          color="primary"
-          size="64"
-          width="2"
-        />
+        <v-progress-circular indeterminate color="primary" size="64" />
       </div>
     </template>
 
@@ -93,7 +89,7 @@ onMounted(getCover);
       color="primary"
       icon="mdi-eye"
       size="small"
-      @click.stop="emit('openDetail', src)"
+      @click.stop="emit('open', src)"
     />
   </v-img>
 </template>

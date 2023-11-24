@@ -41,6 +41,6 @@
       "label": "English"
     }
   ],
-  "locale": "en",
-  "localeFallback": "en"
+  "locale": "zh",
+  "localeFallback": "zh"
 }

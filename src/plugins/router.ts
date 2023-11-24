@@ -23,7 +23,7 @@ const router = createRouter({
       redirect: {
         name: "welcome",
         params: {
-          lang: "en",
+          lang: "zh",
         },
       },
     },

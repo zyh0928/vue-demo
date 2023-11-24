@@ -1,17 +1,18 @@
 <script lang="ts" setup>
 import { useElementSize } from "@vueuse/core";
 
-import { categories, modes } from "~/view/image.json";
+import { categories, views as defaultViews, modes } from "~/view/image.json";
 
+import CatImg from "./components/CatImg.vue";
 import CoverImg from "./components/CoverImg.vue";
+import DogImg from "./components/DogImg.vue";
+import GirlImg from "./components/GirlImg.vue";
 
 interface Detail {
   dialog: boolean;
   url: string;
   width: number;
 }
-
-// type InfiniteDone = (state: "ok" | "empty" | "loading" | "error") => void;
 
 const tools = ref(null);
 
@@ -20,18 +21,14 @@ const toolSize = useElementSize(tools);
 const loading = ref(!1);
 const type = ref("cover");
 const mode = ref<number[]>([]);
-// const views = ref();
-
-// const listCache = ref<string[]>([]);
-// const listPage = ref(1);
+const views = ref(defaultViews);
+const view = ref("mjx");
 
 const detail = reactive<Detail>({
   dialog: !1,
   url: "",
   width: 0,
 });
-
-const showExtra = computed(() => type.value !== "cat");
 
 const toolbarSrc = computed(() => {
   const width = Math.round(toolSize.width.value);
@@ -40,50 +37,13 @@ const toolbarSrc = computed(() => {
   return `https://picsum.photos/${width}/${height}`;
 });
 
+const showExtra = computed(() => type.value !== "cat");
+
 const reset = () => {
   mode.value = [];
+  views.value = defaultViews;
+  view.value = "mjx";
 };
-
-// const getImgs = async (type = state.type) => {
-
-//   switch (type) {
-//     case "list": {
-//       const file = (await getView(state.view)) ?? "";
-//       const imgs: string[] = file.split(/[(\r\n)\r\n]+/);
-
-//       listCache.value = imgs.filter((img) => img.startsWith("http"));
-
-//       const title = imgs.find((img) => img.startsWith("标题"));
-//       if (!title) break;
-
-//       const item = views.value.find(({ label }) => label === state.view);
-//       if (!item) break;
-
-//       item.label = `${title.substring(5)} (${listCache.value.length})`;
-//       break;
-//     }
-
-//     case "dog": {
-//       const dogs = await getDogs();
-
-//       state.list.push(...dogs);
-
-//       listPage.value++;
-//       break;
-//     }
-
-//     case "cat": {
-//       const cats = (await getCats()).map(({ url }: Recordable<string>) => url);
-
-//       state.list.push(...cats);
-
-//       listPage.value++;
-//       break;
-//     }
-//   }
-
-//   state.loading = !1;
-// };
 
 const openDetail = (url?: string) => {
   if (!url) return;
@@ -97,31 +57,7 @@ const openDetail = (url?: string) => {
   });
 };
 
-// const load = async ({ done }: { done: InfiniteDone }) => {
-//   if (listPage.value > 1) {
-//     await getImgs(state.type);
-//   }
-
-//   done("error");
-// };
-
 watch(type, reset);
-
-// watch(
-//   () => state.view,
-//   () => {
-//     if (state.type !== "list") return;
-
-//     state.list = [];
-//     getImgs();
-//   },
-// );
-
-// watch(listCache, () => {
-//   if (state.type !== "list") return;
-
-//   state.list = listCache.value.slice(0, 20);
-// });
 </script>
 
 <template>
@@ -132,86 +68,21 @@ watch(type, reset);
       </template>
 
       <template v-if="showExtra" #extension>
-        <v-slide-group v-if="type === 'cover'" v-model="mode" multiple>
-          <template #prev>
-            <v-icon class="arrow">mdi-chevron-left</v-icon>
-          </template>
-
-          <template #next>
-            <v-icon class="arrow">mdi-chevron-right</v-icon>
-          </template>
-
-          <v-slide-group-item
-            v-for="{ value, label } in modes"
-            :key="value"
-            v-slot="{ isSelected, toggle }"
-            :value="value"
-          >
-            <v-btn
-              :color="isSelected ? 'secondary' : void 0"
-              :disabled="loading"
-              rounded
-              class="ma-2"
-              size="small"
-              variant="elevated"
-              @click="toggle"
-            >
-              {{ label }}
-            </v-btn>
-          </v-slide-group-item>
-        </v-slide-group>
-      </template>
-
-      <!-- <template v-if="showEx" #extension>
-        <v-btn-toggle
-          v-if="type === 'girl'"
+        <my-slides
+          v-if="type === 'cover'"
           v-model="mode"
           :disabled="loading"
+          :options="modes"
           multiple
-          class="ml-2"
-          color="secondary"
-          density="compact"
-        >
-          <v-btn
-            v-for="{ label, value } of modes"
-            :key="value"
-            :active="!1"
-            :value="value"
-            class="text-none"
-          >
-            {{ label }}
-          </v-btn>
-        </v-btn-toggle>
+        />
 
-        <v-slide-group v-else v-model="view" mandatory>
-          <template #prev>
-            <v-icon class="arrow">mdi-chevron-left</v-icon>
-          </template>
-
-          <template #next>
-            <v-icon class="arrow">mdi-chevron-right</v-icon>
-          </template>
-
-          <v-slide-group-item
-            v-for="{ value, label } in views"
-            :key="value"
-            v-slot="{ isSelected, toggle }"
-            :value="value"
-          >
-            <v-btn
-              :color="isSelected ? 'secondary' : void 0"
-              :disabled="loading"
-              rounded
-              class="ma-2"
-              size="small"
-              variant="elevated"
-              @click="toggle"
-            >
-              {{ label }}
-            </v-btn>
-          </v-slide-group-item>
-        </v-slide-group>
-      </template> -->
+        <my-slides
+          v-else-if="type === 'girl'"
+          v-model="view"
+          :options="views"
+          mandatory
+        />
+      </template>
 
       <v-btn-toggle
         v-model="type"
@@ -238,33 +109,28 @@ watch(type, reset);
         v-if="type === 'cover'"
         v-model:loading="loading"
         :mode="mode"
-        @open-detail="openDetail"
+        @open="openDetail"
       />
 
-      <!-- <v-infinite-scroll class="box-list-wrap" @load="load">
-        <cover-img
-          v-if="state.type === 'girl'"
-          :anime="state.anime"
-          :url="state.cover"
-          @cover-end="coverEnd"
-          @cover-load="coverLoad"
-          @get-cover="getCover"
-          @open-detail="openDetail"
-        />
+      <girl-img
+        v-else-if="type === 'girl'"
+        v-model:loading="loading"
+        :view="view"
+        :views="views"
+        @open="openDetail"
+      />
 
-        <v-row v-else dense>
-          <v-col
-            v-for="(url, idx) in state.list"
-            :key="url"
-            cols="12"
-            lg="4"
-            sm="6"
-            xl="3"
-          >
-            <list-img :index="idx" :url="url" @open-detail="openDetail" />
-          </v-col>
-        </v-row>
-      </v-infinite-scroll> -->
+      <dog-img
+        v-else-if="type === 'dog'"
+        v-model:loading="loading"
+        @open="openDetail"
+      />
+
+      <cat-img
+        v-else-if="type === 'cat'"
+        v-model:loading="loading"
+        @open="openDetail"
+      />
     </div>
 
     <v-dialog
@@ -282,8 +148,6 @@ watch(type, reset);
 </template>
 
 <style lang="scss" scoped>
-$border-color: rgba(var(--v-theme-on-background));
-
 .box {
   display: grid;
   grid-template: auto 1fr / 1fr;
@@ -291,23 +155,6 @@ $border-color: rgba(var(--v-theme-on-background));
 
   &-list {
     position: relative;
-
-    &-wrap {
-      position: absolute;
-      padding: 8px;
-      width: 100%;
-      height: 100%;
-      overflow: hidden scroll;
-    }
   }
-}
-
-.arrow {
-  color: rgb(var(--v-theme-background));
-  text-shadow:
-    $border-color 1px 0 0,
-    $border-color 0 1px 0,
-    $border-color -1px 0 0,
-    $border-color 0 -1px 0;
 }
 </style>

@@ -11,8 +11,8 @@ watch(
   () => route.params.lang,
   (lang) => {
     if (typeof lang === "string") {
-      locale.value = lang || "en";
-      current.value = lang || "en";
+      locale.value = lang || "zh";
+      current.value = lang || "zh";
     }
   },
 );
@@ -22,7 +22,7 @@ watch(
   <v-app>
     <my-header @toggle="drawer = !drawer" />
 
-    <my-sidebar :drawer="drawer" />
+    <my-sidebar :model-value="drawer" />
 
     <v-main>
       <router-view v-slot="{ Component }">

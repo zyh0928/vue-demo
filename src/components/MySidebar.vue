@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import { list2tree } from "@/utils/tree";
 
+import type { VNavigationDrawer as DefaultProps } from "vuetify/components/VNavigationDrawer";
+
 type MenuType = {
   children?: MenuType[];
   icon?: string;
@@ -11,10 +13,9 @@ type MenuType = {
   type?: "item" | "label";
 };
 
-type Props = {
-  drawer: boolean;
+interface Props extends /* @vue-ignore */ Partial<DefaultProps> {
   menus?: MenuType[];
-};
+}
 
 const props = withDefaults(defineProps<Props>(), {
   menus: () => [
@@ -133,7 +134,7 @@ const list = computed(() => list2tree<MenuType>(props.menus));
 </script>
 
 <template>
-  <v-navigation-drawer :model-value="drawer" width="240">
+  <v-navigation-drawer width="240">
     <v-list nav density="compact">
       <template
         v-for="{ id, type, route, name, children, icon } of list"
