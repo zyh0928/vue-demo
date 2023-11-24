@@ -13,9 +13,9 @@ interface Error {
 
 interface Image extends Page {
   cat: string;
+  cover: string;
   dog: string;
   girl: string;
-  list: string;
 }
 
 interface Welcome extends Page {

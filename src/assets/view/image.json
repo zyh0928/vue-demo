@@ -1,0 +1,55 @@
+{
+  "categories": ["cover", "girl", "dog", "cat"],
+  "modes": [
+    {
+      "label": "微博",
+      "value": 1
+    },
+    {
+      "label": "ins",
+      "value": 2
+    },
+    {
+      "label": "cosplay",
+      "value": 3
+    },
+    {
+      "label": "mtcos",
+      "value": 5
+    },
+    {
+      "label": "美腿",
+      "value": 7
+    },
+    {
+      "label": "coser",
+      "value": 8
+    },
+    {
+      "label": "兔玩",
+      "value": 9
+    }
+  ],
+  "views": [
+    {
+      "label": "mjx",
+      "value": "mjx"
+    },
+    {
+      "label": "tuwan",
+      "value": "tuwan"
+    },
+    {
+      "label": "1628517708",
+      "value": "1628517708"
+    },
+    {
+      "label": "1624387144",
+      "value": "1624387144"
+    },
+    {
+      "label": "1631028859",
+      "value": "1631028859"
+    }
+  ]
+}

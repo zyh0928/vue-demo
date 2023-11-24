@@ -47,20 +47,20 @@
         "cat": {
           "type": "string"
         },
+        "cover": {
+          "type": "string"
+        },
         "dog": {
           "type": "string"
         },
         "girl": {
           "type": "string"
         },
-        "list": {
-          "type": "string"
-        },
         "title": {
           "type": "string"
         }
       },
-      "required": ["cat", "dog", "girl", "list", "title"],
+      "required": ["cat", "cover", "dog", "girl", "title"],
       "type": "object"
     },
     "Page": {

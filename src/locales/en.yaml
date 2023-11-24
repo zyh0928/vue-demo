@@ -9,9 +9,9 @@ views:
     "500": Internal server error
   image:
     cat: Nyan
+    cover: ALLAH!!
     dog: Yap
-    girl: ALLAH!!
-    list: AKBAR!!
+    girl: AKBAR!!
     title: Image
   node:
     title: Node

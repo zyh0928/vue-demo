@@ -1,8 +1,6 @@
 <script lang="ts" setup>
 import { list2tree } from "@/utils/tree";
 
-import { defalutMenus, sidebarWidth } from "~/variables.json";
-
 type MenuType = {
   children?: MenuType[];
   icon?: string;
@@ -19,7 +17,114 @@ type Props = {
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  menus: () => defalutMenus as MenuType[],
+  menus: () => [
+    {
+      id: 1,
+      name: {
+        en: "Page",
+        zh: "页面",
+      },
+      type: "label",
+    },
+    {
+      icon: "human-greeting-variant",
+      id: 2,
+      name: {
+        en: "Welcome",
+        zh: "嗨！！",
+      },
+      route: "welcome",
+    },
+    {
+      icon: "star-shooting",
+      id: 4,
+      name: {
+        en: "image",
+        zh: "哇呜！",
+      },
+      route: "image",
+    },
+    {
+      icon: "arrange-bring-forward",
+      id: 5,
+      name: {
+        en: "About",
+        zh: "关于",
+      },
+      route: "about",
+    },
+    {
+      id: 6,
+      name: {
+        en: "Test",
+        zh: "测试",
+      },
+      type: "label",
+    },
+    {
+      icon: "resistor-nodes",
+      id: 7,
+      name: {
+        en: "Root Node",
+        zh: "根节点",
+      },
+      route: "node",
+    },
+    {
+      id: 71,
+      name: {
+        en: "Subnode-1",
+        zh: "子节点-1",
+      },
+      parentId: 7,
+      route: "1",
+    },
+    {
+      id: 72,
+      name: {
+        en: "Subnode-2",
+        zh: "子节点-2",
+      },
+      parentId: 7,
+      route: "2",
+    },
+    {
+      id: 73,
+      name: {
+        en: "Subnode-3",
+        zh: "子节点-3",
+      },
+      parentId: 7,
+      route: "3",
+    },
+    {
+      icon: "heart-broken",
+      id: 8,
+      name: {
+        en: "Oops!",
+        zh: "完蛋啦！",
+      },
+      route: "error",
+    },
+    {
+      id: 81,
+      name: {
+        en: "AAA",
+        zh: "一一一",
+      },
+      parentId: 8,
+      route: "1",
+    },
+    {
+      id: 82,
+      name: {
+        en: "BBB",
+        zh: "二二二",
+      },
+      parentId: 8,
+      route: "2",
+    },
+  ],
 });
 
 const { locale } = useI18n<Record<string, never>, I18nCode>();
@@ -28,7 +133,7 @@ const list = computed(() => list2tree<MenuType>(props.menus));
 </script>
 
 <template>
-  <v-navigation-drawer :model-value="drawer" :width="sidebarWidth">
+  <v-navigation-drawer :model-value="drawer" width="240">
     <v-list nav density="compact">
       <template
         v-for="{ id, type, route, name, children, icon } of list"
