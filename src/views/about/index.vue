@@ -1,4 +1,8 @@
 <script lang="ts" setup>
+import { debounce } from "lodash-es";
+
+import useGlobalStore from "#/global";
+import { corsRequest } from "$/request";
 import { colors } from "~/variables.json";
 
 interface EnvType {
@@ -7,105 +11,141 @@ interface EnvType {
   value: string;
 }
 
+const { showSnackbar } = useGlobalStore();
+
 const env = import.meta.env;
+const required = JSON.stringify(["validations.required", { field: "Api" }]);
+const rules = [(v?: string) => !!v || required];
 
-const api = ref("");
+const api = ref("https://3650000.xyz/view/url/tuwan");
 const data = ref<Recordable>({});
+const loading = ref(!1);
 
-const props = computed(() => {
+const envs = computed(() => {
   const res: EnvType[] = [];
-
   Object.keys(env).forEach((key) => {
-    const bg = "bg-" + colors[Math.floor(Math.random() * colors.length)];
-
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    const bg = "bg-" + color;
     res.push({
       bg,
       key,
       value: env[key],
     });
   });
-
   return res;
 });
 
-const sendRequest = async () => {
-  if (!api.value) return;
-
-  try {
-    // const resp = await request.get(mapApi("jrsc", api.value));
-    // data.value = resp;
-  } catch (e) {
-    const error = e as { [key: string]: unknown };
-
-    const res: { [key: string]: unknown } = {};
-
-    Object.keys(error).forEach((key) => {
-      res[key] = error[key];
-    });
-
-    data.value = res;
-  }
+const copyEnv = async (txt: string) => {
+  await navigator.clipboard.writeText(txt);
+  showSnackbar(txt, { color: "success" });
 };
 
-// ("animate__infinite");
+const sendRequest = debounce(async () => {
+  if (!api.value) return;
+  try {
+    loading.value = !0;
+    const code = encodeURIComponent(api.value);
+    data.value = await corsRequest.get(code);
+  } catch (error) {
+    const res: { [key: string]: unknown } = {};
+    if (error instanceof Error) {
+      Object.keys(error).forEach((key) => {
+        // @ts-expect-error
+        res[key] = error[key];
+      });
+    }
+    data.value = res;
+  } finally {
+    loading.value = !1;
+  }
+}, 500);
 </script>
 
 <template>
   <v-row>
     <v-col cols="12">
-      <div class="text-h3 text-primary pt-6 px-6">
+      <div class="text-h3 text-primary pt-4 px-4">
         {{ $t("views.about.title") }}
       </div>
     </v-col>
 
-    <v-col cols="4">
-      <div
-        v-for="({ key, value, bg }, idx) of props"
-        :key="key"
-        :class="[idx ? 'mt-4' : '', bg]"
-        class="text-h6 rounded-e-pill"
-      >
-        {{ key }}: {{ value }}
+    <v-col cols="12" md="5">
+      <div class="text-h6 env">
+        <template v-for="{ key, value, bg } of envs" :key="key">
+          <div :class="[bg]" class="env-item key" v-text="key" />
+
+          <div :class="[bg]" class="env-item value">
+            <div class="flex-grow-1 text-truncate" v-text="value" />
+          </div>
+
+          <div :class="[bg]" class="env-item action">
+            <v-icon size="24" @click="copyEnv(value)">mdi-content-copy</v-icon>
+          </div>
+        </template>
       </div>
     </v-col>
 
-    <v-col cols="8">
+    <v-col cols="12" md="6">
       <v-text-field
-        v-model="api"
+        v-model.trim="api"
+        :disabled="loading"
         :placeholder="$t('views.about.placeholder')"
-        :rules="[
-          (value) => !!value || $t('validations.required', { field: 'Api' }),
-        ]"
-        append-icon="mdi-exit-to-app"
+        :rules="rules"
+        clearable
+        append-inner-icon="mdi-exit-to-app"
         color="secondary"
-        label="Ovooa Api"
-        prepend-inner-icon="mdi-api"
-        variant="underlined"
-        @click:append="sendRequest"
-      />
-      <pre class="elevation-9 bg-info preview">{{ data }}</pre>
+        variant="outlined"
+        @click:append-inner="sendRequest"
+        @keypress.enter="sendRequest"
+      >
+        <template #message="{ message }">
+          {{ $t(JSON.parse(message)[0], JSON.parse(message)[1]) }}
+        </template>
+      </v-text-field>
+
+      <pre class="elevation-9 bg-info preview" v-text="data" />
     </v-col>
   </v-row>
 </template>
 
 <style lang="scss" scoped>
-@keyframes slide {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
+$row-gap: 12px;
+$spacing: 8px;
 
-  12.5% {
-    transform: translate3d(25px, 0, 0);
-  }
+.env {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  row-gap: $row-gap;
 
-  25% {
-    transform: translate3d(0, 0, 0);
+  &-item {
+    display: flex;
+    align-items: center;
+    padding-top: calc($spacing / 2);
+    padding-bottom: calc($spacing / 2);
+    height: 100%;
+
+    &.key {
+      justify-content: flex-end;
+      padding-right: $spacing;
+      padding-left: $spacing;
+    }
+
+    &.value {
+      overflow: hidden;
+    }
+
+    &.action {
+      border-radius: 0 $spacing $spacing 0;
+      padding-right: $spacing;
+      padding-left: $spacing;
+    }
   }
 }
 
 .preview {
-  border-radius: 12px;
-  padding: 12px;
+  margin-top: 2px;
+  border-radius: $row-gap;
+  padding: $row-gap;
   overflow: hidden;
   text-overflow: ellipsis;
 }

@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { useLocale } from "vuetify";
 
+import useGlobalStore from "#/global";
+
 const route = useRoute();
 const { current } = useLocale();
 const { locale } = useI18n();
+const { snackbar } = useGlobalStore();
 
 const drawer = ref(!0);
 
@@ -34,6 +37,20 @@ watch(
           <component :is="Component" />
         </transition>
       </router-view>
+
+      <v-snackbar
+        v-model="snackbar.show"
+        color="error"
+        location="top"
+        timeout="3000"
+        v-bind="snackbar.options"
+      >
+        <template #actions>
+          <v-icon @click="snackbar.show = !1">mdi-close</v-icon>
+        </template>
+
+        {{ snackbar.text }}
+      </v-snackbar>
     </v-main>
   </v-app>
 </template>

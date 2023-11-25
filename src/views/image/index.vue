@@ -150,7 +150,7 @@ watch(type, reset);
 <style lang="scss" scoped>
 .box {
   display: grid;
-  grid-template: auto 1fr / 1fr;
+  grid-template-rows: auto 1fr;
   height: 100%;
 
   &-list {

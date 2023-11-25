@@ -2,7 +2,7 @@ validations:
   required: "{field} is required."
 views:
   about:
-    placeholder: Place Enter Ovooa Api
+    placeholder: Please enter API
     title: About Vue Demo
   error:
     "404": Page not found

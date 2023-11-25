@@ -2,7 +2,7 @@ validations:
   required: "{field}不能为空。"
 views:
   about:
-    placeholder: 请输入Ovooa Api
+    placeholder: 请输入 Api
     title: 关于 Vue Demo
   error:
     "404": 页面未找到

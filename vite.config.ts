@@ -64,23 +64,6 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: !0,
     port: 9029,
-    proxy: {
-      "/cat-api": {
-        changeOrigin: !0,
-        rewrite: (path) => path.replace(/^\/cat-api/, ""),
-        target: "https://api.thecatapi.com",
-      },
-      "/dog-api": {
-        changeOrigin: !0,
-        rewrite: (path) => path.replace(/^\/dog-api/, ""),
-        target: "https://shibe.online/api",
-      },
-      "/jrsc-api": {
-        changeOrigin: !0,
-        rewrite: (path) => path.replace(/^\/jrsc-api/, ""),
-        target: "https://v2.jinrishici.com",
-      },
-    },
     strictPort: !0,
   },
 }));

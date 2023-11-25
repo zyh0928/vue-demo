@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { list2tree } from "@/utils/tree";
 
-import type { VNavigationDrawer as DefaultProps } from "vuetify/components/VNavigationDrawer";
+import type { VNavigationDrawer as DefaultProps } from "vuetify/components";
 
 type MenuType = {
   children?: MenuType[];
