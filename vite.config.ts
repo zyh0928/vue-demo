@@ -50,6 +50,7 @@ export default defineConfig(({ mode }) => ({
           },
         ],
         injectTo: "body",
+        preconnect: !0,
       },
     }),
   ],
