@@ -30,10 +30,10 @@ withDefaults(defineProps<Props>(), {
       <v-btn
         :color="isSelected ? 'secondary' : void 0"
         :disabled="disabled"
-        rounded
         class="ma-2"
         size="small"
         variant="elevated"
+        rounded
         @click="toggle"
       >
         {{ label }}

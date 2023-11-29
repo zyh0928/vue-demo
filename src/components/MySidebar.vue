@@ -135,7 +135,7 @@ const list = computed(() => list2tree<MenuType>(props.menus));
 
 <template>
   <v-navigation-drawer width="240">
-    <v-list nav density="compact">
+    <v-list density="compact" nav>
       <template
         v-for="{ id, type, route, name, children, icon } of list"
         :key="id"

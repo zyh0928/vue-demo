@@ -73,7 +73,7 @@ onMounted(getCover);
   >
     <template #placeholder>
       <div class="h-100 d-flex justify-center align-center">
-        <v-progress-circular indeterminate color="primary" size="64" />
+        <v-progress-circular color="primary" size="64" indeterminate />
       </div>
     </template>
 

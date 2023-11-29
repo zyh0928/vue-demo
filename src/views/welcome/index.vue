@@ -183,11 +183,11 @@ onMounted(async () => {
         <v-btn-toggle
           :disabled="options.changing || options.paused"
           :model-value="options.type"
-          mandatory
           class="h-100"
           color="primary"
           rounded="0"
           variant="text"
+          mandatory
           @update:model-value="changeAnime"
         >
           <v-btn value="axis">{{ $t("views.welcome.axis") }}</v-btn>
@@ -241,7 +241,6 @@ onMounted(async () => {
           <v-sheet class="pa-2 pr-4" width="400">
             <v-slider
               v-model="options.total"
-              hide-details
               class="mt-8"
               color="primary"
               max="300"
@@ -249,13 +248,13 @@ onMounted(async () => {
               prepend-icon="mdi-grid"
               step="1"
               thumb-label="always"
+              hide-details
               @end="getControl"
               @start="stopAnime"
             />
 
             <v-slider
               v-model="options.size"
-              hide-details
               class="mt-8"
               color="primary"
               max="50"
@@ -263,11 +262,11 @@ onMounted(async () => {
               prepend-icon="mdi-view-grid"
               step="1"
               thumb-label="always"
+              hide-details
             />
 
             <v-slider
               v-model="options.col"
-              hide-details
               class="mt-8"
               color="primary"
               max="30"
@@ -275,6 +274,7 @@ onMounted(async () => {
               prepend-icon="mdi-view-column"
               step="1"
               thumb-label="always"
+              hide-details
               @end="getControl"
               @start="stopAnime"
             />

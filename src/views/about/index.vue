@@ -91,10 +91,10 @@ const sendRequest = debounce(async () => {
         :disabled="loading"
         :placeholder="$t('views.about.placeholder')"
         :rules="rules"
-        clearable
         append-inner-icon="mdi-exit-to-app"
         color="secondary"
         variant="outlined"
+        clearable
         @click:append-inner="sendRequest"
         @keypress.enter="sendRequest"
       >

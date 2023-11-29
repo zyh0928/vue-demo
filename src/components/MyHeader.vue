@@ -46,7 +46,7 @@ onMounted(() => {
           <v-btn v-bind="props" icon="mdi-translate" />
         </template>
 
-        <v-list nav density="compact">
+        <v-list density="compact" nav>
           <v-list-item
             v-for="{ code, label } of langs"
             :key="code"

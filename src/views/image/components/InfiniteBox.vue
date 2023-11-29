@@ -28,7 +28,7 @@ const load = (index: number) => {
   <v-infinite-scroll class="infinite-box">
     <template #loading>
       <div class="pa-2">
-        <v-progress-circular indeterminate size="48" />
+        <v-progress-circular size="48" indeterminate />
       </div>
     </template>
 
@@ -51,14 +51,14 @@ const load = (index: number) => {
       >
         <v-card
           :class="animes[idx]"
-          hover
           class="animate__animated animate__fast"
+          hover
           @click.stop="$emit('open', url)"
         >
-          <v-img :src="url" cover aspect-ratio="1" @load="load(idx)">
+          <v-img :src="url" aspect-ratio="1" cover @load="load(idx)">
             <template #placeholder>
               <div class="h-100 d-flex justify-center align-center">
-                <v-progress-circular indeterminate color="primary" size="48" />
+                <v-progress-circular color="primary" size="48" indeterminate />
               </div>
             </template>
 

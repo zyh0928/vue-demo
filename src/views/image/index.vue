@@ -87,10 +87,10 @@ watch(type, reset);
       <v-btn-toggle
         v-model="type"
         :disabled="loading"
-        mandatory
         class="ml-2"
         color="secondary"
         density="compact"
+        mandatory
       >
         <v-btn
           v-for="category in categories"
