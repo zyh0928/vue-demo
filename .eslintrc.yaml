@@ -8,8 +8,7 @@ extends:
   - plugin:import/typescript
   - plugin:yml/standard
   - plugin:yml/prettier
-  - plugin:vue/vue3-essential
-  - plugin:vue/recommended
+  - plugin:vue/vue3-recommended
   - "@vue/eslint-config-typescript/recommended"
   - "@vue/eslint-config-prettier"
 overrides:
@@ -33,9 +32,6 @@ rules:
   "@typescript-eslint/ban-ts-comment": 0
   import/no-unresolved: 0
   vue/multi-word-component-names: 0
-  vue/no-multiple-template-root: 0
-  vue/no-v-for-template-key: 0
-  vue/no-v-model-argument: 0
 
   # error rules
   import/first: 2
@@ -83,13 +79,13 @@ rules:
         - CONDITIONALS
         - RENDER_MODIFIERS
         - GLOBAL
-        - - UNIQUE
-          - SLOT
+        - UNIQUE
+        - SLOT
         - TWO_WAY_BINDING
         - OTHER_DIRECTIVES
         - ATTR_DYNAMIC
-        - ATTR_SHORTHAND_BOOL
         - ATTR_STATIC
+        - ATTR_SHORTHAND_BOOL
         - EVENTS
         - CONTENT
   vue/block-order:

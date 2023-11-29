@@ -15,15 +15,15 @@
   },
   "dependencies": {
     "@vueuse/core": "^10.6.1",
-    "animejs": "^3.2.1",
+    "animejs": "^3.2.2",
     "lodash-es": "^4.17.21",
     "pinia": "^2.1.7",
     "umi-request": "^1.4.0",
     "uuid": "^9.0.1",
     "vue": "^3.3.9",
-    "vue-i18n": "^9.7.1",
+    "vue-i18n": "^9.8.0",
     "vue-router": "^4.2.5",
-    "vuetify": "^3.4.3"
+    "vuetify": "^3.4.4"
   },
   "devDependencies": {
     "@intlify/unplugin-vue-i18n": "^1.5.0",
@@ -32,8 +32,8 @@
     "@types/lodash-es": "^4.17.12",
     "@types/node": "^20.10.0",
     "@types/uuid": "^9.0.7",
-    "@typescript-eslint/eslint-plugin": "^6.12.0",
-    "@typescript-eslint/parser": "^6.12.0",
+    "@typescript-eslint/eslint-plugin": "^6.13.1",
+    "@typescript-eslint/parser": "^6.13.1",
     "@vitejs/plugin-vue": "^4.5.0",
     "@vue/eslint-config-prettier": "^8.0.0",
     "@vue/eslint-config-typescript": "^12.0.0",
@@ -62,8 +62,9 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite",
-    "fix": "prettier -w **/*.{js{,on,x},ts{,x},vue,y{a,}ml}",
-    "lint": "eslint --fix **/*.{js{,on,x},ts{,x},vue,y{a,}ml}",
+    "fix": "pnpm format && pnpm lint",
+    "format": "prettier -w src/**/*.{js{,on,x},ts{,x},vue,y{a,}ml}",
+    "lint": "eslint --fix src/**/*.{js{,on,x},ts{,x},vue,y{a,}ml}",
     "serve": "vite preview"
   },
   "version": "0.1.0"
