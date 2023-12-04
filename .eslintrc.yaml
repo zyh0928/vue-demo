@@ -57,7 +57,7 @@ rules:
           pattern: "@/**"
           position: after
         - group: external
-          pattern: "[#,$,~]/**"
+          pattern: "[#,$,%,~]/**"
           position: after
   simple-import-sort/exports: 2
   sort-imports:

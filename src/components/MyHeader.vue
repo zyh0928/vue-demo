@@ -34,9 +34,9 @@ onMounted(() => {
 
     <v-app-bar-title>
       {{
-        $te(`views.${page}.title`)
-          ? $t(`views.${page}.title`)
-          : $t("views.error.404")
+        $te(`pages.${page}.title`)
+          ? $t(`pages.${page}.title`)
+          : $t("pages.error.404")
       }}
     </v-app-bar-title>
 

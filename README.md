@@ -11,7 +11,9 @@ Set `Disabled`
 
 | Alias | Path           |
 | ----- | -------------- |
+| @@/\* | ./\*           |
 | @/\*  | src/\*         |
+| %/\*  | src/pages/\*   |
 | #/\*  | src/store/\*   |
 | $/\*  | src/service/\* |
 | ~/\*  | src/assets/\*  |

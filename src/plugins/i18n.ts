@@ -1,5 +1,5 @@
-import en from "@/locales/en.yaml";
-import zh from "@/locales/zh.yaml";
+import en from "@@/locales/en.yaml";
+import zh from "@@/locales/zh.yaml";
 
 import { locale, localeFallback } from "~/variables.json";
 

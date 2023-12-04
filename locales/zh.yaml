@@ -1,6 +1,4 @@
-validations:
-  required: "{field}不能为空。"
-views:
+pages:
   about:
     placeholder: 请输入 Api
     title: 关于 Vue Demo
@@ -20,3 +18,5 @@ views:
     fade: 渐隐
     title: Vue Demo 主页
     wave: 波浪
+validations:
+  required: "{field}不能为空。"

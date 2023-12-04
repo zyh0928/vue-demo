@@ -10,7 +10,9 @@
     "paths": {
       "#/*": ["src/store/*"],
       "$/*": ["src/service/*"],
+      "%/*": ["src/pages/*"],
       "@/*": ["src/*"],
+      "@@/*": ["./*"],
       "~/*": ["src/assets/*"]
     },
     "resolveJsonModule": true,

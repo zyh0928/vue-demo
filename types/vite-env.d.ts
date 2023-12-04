@@ -7,7 +7,7 @@ declare module "*.vue" {
   export default component;
 }
 
-declare module "@/locales/*.yaml" {
+declare module "@@/locales/*.yaml" {
   const data: I18nSchema;
   export default data;
 }

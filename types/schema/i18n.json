@@ -31,14 +31,14 @@
     "I18nSchema": {
       "additionalProperties": false,
       "properties": {
+        "pages": {
+          "$ref": "#/definitions/Pages"
+        },
         "validations": {
           "$ref": "#/definitions/Validations"
-        },
-        "views": {
-          "$ref": "#/definitions/Views"
         }
       },
-      "required": ["validations", "views"],
+      "required": ["pages", "validations"],
       "type": "object"
     },
     "Image": {
@@ -73,17 +73,7 @@
       "required": ["title"],
       "type": "object"
     },
-    "Validations": {
-      "additionalProperties": false,
-      "properties": {
-        "required": {
-          "type": "string"
-        }
-      },
-      "required": ["required"],
-      "type": "object"
-    },
-    "Views": {
+    "Pages": {
       "additionalProperties": false,
       "properties": {
         "about": {
@@ -103,6 +93,16 @@
         }
       },
       "required": ["about", "error", "image", "node", "welcome"],
+      "type": "object"
+    },
+    "Validations": {
+      "additionalProperties": false,
+      "properties": {
+        "required": {
+          "type": "string"
+        }
+      },
+      "required": ["required"],
       "type": "object"
     },
     "Welcome": {

@@ -1,6 +1,4 @@
-validations:
-  required: "{field} is required."
-views:
+pages:
   about:
     placeholder: Please enter API
     title: About Vue Demo
@@ -20,3 +18,5 @@ views:
     fade: Fade
     title: Welcome to Vue Demo
     wave: Wave
+validations:
+  required: "{field} is required."

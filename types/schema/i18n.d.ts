@@ -28,7 +28,7 @@ interface Validations {
   required: string;
 }
 
-interface Views {
+interface Pages {
   about: About;
   error: Error;
   image: Image;
@@ -37,12 +37,12 @@ interface Views {
 }
 
 declare interface I18nSchema {
+  pages: Pages;
   validations: Validations;
-  views: Views;
 }
 
 // pnpx ts-json-schema-generator --path types/schema/i18n.d.ts --type I18nSchema
 // export interface I18nSchema {
+//   pages: Pages;
 //   validations: Validations;
-//   views: Views;
 // }

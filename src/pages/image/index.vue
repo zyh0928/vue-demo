@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useElementSize } from "@vueuse/core";
 
-import { categories, views as defaultViews, modes } from "~/view/image.json";
+import { categories, views as defaultViews, modes } from "~/pages/image.json";
 
 import CatImg from "./components/CatImg.vue";
 import CoverImg from "./components/CoverImg.vue";

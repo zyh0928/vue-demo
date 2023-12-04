@@ -31,7 +31,7 @@ export default defineConfig(({ mode }) => ({
       template: { transformAssetUrls },
     }),
     VueI18n({
-      include: resolve(__dirname, "src/locales/**"),
+      include: resolve(__dirname, "locales/**"),
     }),
     Vuetify({
       styles: { configFile: "src/styles/settings.scss" },
@@ -58,7 +58,9 @@ export default defineConfig(({ mode }) => ({
     alias: {
       "#": resolve(__dirname, "src/store"),
       $: resolve(__dirname, "src/service"),
+      "%": resolve(__dirname, "src/pages"),
       "@": resolve(__dirname, "src"),
+      "@@": resolve(__dirname, "."),
       "~": resolve(__dirname, "src/assets"),
     },
   },

@@ -1,8 +1,8 @@
-import About from "@/views/about/index.vue";
-import Image from "@/views/image/index.vue";
-import Node from "@/views/node/index.vue";
-import NodeChild from "@/views/node/pages/child.vue";
-import Welcome from "@/views/welcome/index.vue";
+import About from "%/about/index.vue";
+import Image from "%/image/index.vue";
+import Node from "%/node/index.vue";
+import NodeChild from "%/node/pages/child.vue";
+import Welcome from "%/welcome/index.vue";
 
 import type { RouteRecordRaw } from "vue-router";
 
