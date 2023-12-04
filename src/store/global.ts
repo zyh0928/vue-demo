@@ -3,9 +3,9 @@ import useUserStore from "./user";
 import type { VSnackbar } from "vuetify/components";
 
 interface SnackbarState {
-  options?: Partial<VSnackbar>;
   show: boolean;
   text: string;
+  options?: Partial<VSnackbar>;
 }
 
 export default defineStore("global", () => {

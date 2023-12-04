@@ -4,10 +4,10 @@ import { list2tree } from "@/utils/tree";
 import type { VNavigationDrawer as DefaultProps } from "vuetify/components";
 
 type MenuType = {
-  children?: MenuType[];
-  icon?: string;
   id: GenericScalar;
   name: I18nType;
+  children?: MenuType[];
+  icon?: string;
   parentId?: GenericScalar;
   route?: string;
   type?: "item" | "label";

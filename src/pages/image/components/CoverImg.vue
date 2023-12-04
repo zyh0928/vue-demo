@@ -3,8 +3,8 @@ import { getGirl } from "$/girl";
 import { animations } from "~/variables.json";
 
 interface Props {
-  loading?: boolean;
   mode: number[];
+  loading?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {});
