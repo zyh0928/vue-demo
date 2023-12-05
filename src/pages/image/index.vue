@@ -99,7 +99,7 @@ watch(type, reset);
           :value="category"
           class="text-none"
         >
-          {{ $t(`views.image.${category}`) }}
+          {{ $t(`pages.image.${category}`) }}
         </v-btn>
       </v-btn-toggle>
     </v-toolbar>

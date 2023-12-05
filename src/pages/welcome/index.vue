@@ -16,6 +16,8 @@ interface AnimeOptions {
   type: AnimeType;
 }
 
+const animes: AnimeType[] = ["axis", "wave", "fade"];
+
 const control = ref<Nullable<AnimeInstance>>();
 
 const options = reactive<AnimeOptions>({
@@ -190,11 +192,9 @@ onMounted(async () => {
           mandatory
           @update:model-value="changeAnime"
         >
-          <v-btn value="axis">{{ $t("views.welcome.axis") }}</v-btn>
-
-          <v-btn value="wave">{{ $t("views.welcome.wave") }}</v-btn>
-
-          <v-btn value="fade">{{ $t("views.welcome.fade") }}</v-btn>
+          <v-btn v-for="key in animes" :key="key" :value="key">
+            {{ $t(`pages.welcome.${key}`) }}
+          </v-btn>
         </v-btn-toggle>
 
         <v-btn

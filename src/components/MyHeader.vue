@@ -13,6 +13,7 @@ const baseUrl = import.meta.env.BASE_URL;
 
 const { page } = storeToRefs(globalStore);
 
+// TODO: to store
 const toggleTheme = () => {
   const mode = theme.global.current.value.dark ? "light" : "dark";
 

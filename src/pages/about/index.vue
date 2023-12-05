@@ -65,7 +65,7 @@ const sendRequest = debounce(async () => {
   <v-row>
     <v-col cols="12">
       <div class="text-h3 text-primary pt-4 px-4">
-        {{ $t("views.about.title") }}
+        {{ $t("pages.about.title") }}
       </div>
     </v-col>
 
@@ -89,7 +89,7 @@ const sendRequest = debounce(async () => {
       <v-text-field
         v-model.trim="api"
         :disabled="loading"
-        :placeholder="$t('views.about.placeholder')"
+        :placeholder="$t('pages.about.placeholder')"
         :rules="rules"
         append-inner-icon="mdi-exit-to-app"
         color="secondary"
