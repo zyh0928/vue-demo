@@ -10,35 +10,14 @@ import Vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  base: loadEnv(mode, process.cwd(), "BASE_URL").BASE_URL,
+  base: loadEnv(mode, __dirname, "BASE_URL").BASE_URL,
   envPrefix: "DEMO_",
+  esbuild: {
+    drop: mode === "production" ? ["console", "debugger"] : void 0,
+  },
   plugins: [
-    AutoImport({
-      dts: "types/auto-imports.d.ts",
-      imports: [
-        "vue",
-        "vue-router",
-        "pinia",
-        {
-          "vue-i18n": ["createI18n", "useI18n"],
-        },
-      ],
-    }),
-    Components({
-      dts: "types/auto-components.d.ts",
-    }),
-    Vue({
-      template: { transformAssetUrls },
-    }),
-    VueI18n({
-      include: resolve(__dirname, "locales/**"),
-    }),
-    Vuetify({
-      styles: { configFile: "src/styles/settings.scss" },
-    }),
     Unfonts({
       google: {
-        display: "block",
         families: [
           {
             name: "Raleway",
@@ -50,8 +29,30 @@ export default defineConfig(({ mode }) => ({
           },
         ],
         injectTo: "body",
-        preconnect: !0,
       },
+    }),
+    Vue({
+      template: { transformAssetUrls },
+    }),
+    VueI18n({
+      include: resolve(__dirname, "locales/**"),
+    }),
+    Vuetify({
+      styles: { configFile: "src/styles/settings.scss" },
+    }),
+    AutoImport({
+      dts: "@types/auto-imports.d.ts",
+      imports: [
+        "vue",
+        "vue-router",
+        "pinia",
+        {
+          "vue-i18n": ["createI18n", "useI18n"],
+        },
+      ],
+    }),
+    Components({
+      dts: "@types/auto-components.d.ts",
     }),
   ],
   resolve: {

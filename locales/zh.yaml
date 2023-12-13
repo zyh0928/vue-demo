@@ -19,4 +19,4 @@ pages:
     title: Vue Demo 主页
     wave: 波浪
 validations:
-  required: "{field}不能为空。"
+  required: "{field}不能为空"

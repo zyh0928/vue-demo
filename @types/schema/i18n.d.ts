@@ -7,8 +7,8 @@ interface About extends Page {
 }
 
 interface Error {
-  404: string;
-  500: string;
+  "404": string;
+  "500": string;
 }
 
 interface Image extends Page {
@@ -41,7 +41,7 @@ declare interface I18nSchema {
   validations: Validations;
 }
 
-// pnpx ts-json-schema-generator --path types/schema/i18n.d.ts --type I18nSchema
+// pnpx ts-json-schema-generator --path @types/schema/i18n.d.ts --type I18nSchema
 // export interface I18nSchema {
 //   pages: Pages;
 //   validations: Validations;
