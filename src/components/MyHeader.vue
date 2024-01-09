@@ -57,7 +57,7 @@ onMounted(() => {
           >
             <template #prepend>
               <v-avatar
-                :image="`${baseUrl}icon/${code}.svg`"
+                :image="`${baseUrl}icons/${code}.svg`"
                 density="compact"
                 rounded="0"
               />
