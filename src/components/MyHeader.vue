@@ -6,12 +6,11 @@ import { langs } from "~/variables.json";
 
 defineEmits<{ toggle: [] }>();
 
-const globalStore = useGlobalStore();
 const theme = useTheme();
 
 const baseUrl = import.meta.env.BASE_URL;
 
-const { page } = storeToRefs(globalStore);
+const { page } = storeToRefs(useGlobalStore());
 
 // TODO: to store
 const toggleTheme = () => {

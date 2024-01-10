@@ -1,177 +1,56 @@
 <script lang="ts" setup>
 import { list2tree } from "@/utils/tree";
 
+import useUserStore from "#/user";
+import type { MenuType } from "$/auth";
+
 import type { VNavigationDrawer as DefaultProps } from "vuetify/components";
 
-type MenuType = {
-  id: GenericScalar;
-  name: I18nType;
-  children?: MenuType[];
-  icon?: string;
-  parentId?: GenericScalar;
-  route?: string;
-  type?: "item" | "label";
-};
+type TreeItem = MenuType & { children?: MenuType[] };
 
-interface Props extends /* @vue-ignore */ Partial<DefaultProps> {
-  menus?: MenuType[];
-}
+interface Props extends /* @vue-ignore */ Partial<DefaultProps> {}
 
-const props = withDefaults(defineProps<Props>(), {
-  menus: () => [
-    {
-      id: 1,
-      name: {
-        en: "Page",
-        zh: "页面",
-      },
-      type: "label",
-    },
-    {
-      icon: "human-greeting-variant",
-      id: 2,
-      name: {
-        en: "Welcome",
-        zh: "嗨！！",
-      },
-      route: "welcome",
-    },
-    {
-      icon: "star-shooting",
-      id: 4,
-      name: {
-        en: "image",
-        zh: "哇呜！",
-      },
-      route: "image",
-    },
-    {
-      icon: "arrange-bring-forward",
-      id: 5,
-      name: {
-        en: "About",
-        zh: "关于",
-      },
-      route: "about",
-    },
-    {
-      id: 6,
-      name: {
-        en: "Test",
-        zh: "测试",
-      },
-      type: "label",
-    },
-    {
-      icon: "resistor-nodes",
-      id: 7,
-      name: {
-        en: "Root Node",
-        zh: "根节点",
-      },
-      route: "node",
-    },
-    {
-      id: 71,
-      name: {
-        en: "Subnode-1",
-        zh: "子节点-1",
-      },
-      parentId: 7,
-      route: "1",
-    },
-    {
-      id: 72,
-      name: {
-        en: "Subnode-2",
-        zh: "子节点-2",
-      },
-      parentId: 7,
-      route: "2",
-    },
-    {
-      id: 73,
-      name: {
-        en: "Subnode-3",
-        zh: "子节点-3",
-      },
-      parentId: 7,
-      route: "3",
-    },
-    {
-      icon: "heart-broken",
-      id: 8,
-      name: {
-        en: "Oops!",
-        zh: "完蛋啦！",
-      },
-      route: "error",
-    },
-    {
-      id: 81,
-      name: {
-        en: "AAA",
-        zh: "一一一",
-      },
-      parentId: 8,
-      route: "1",
-    },
-    {
-      id: 82,
-      name: {
-        en: "BBB",
-        zh: "二二二",
-      },
-      parentId: 8,
-      route: "2",
-    },
-  ],
-});
+withDefaults(defineProps<Props>(), {});
 
-const { locale } = useI18n<Record<string, never>, I18nCode>();
+const { locale } = useI18n<Recordable<never>, I18nCode>();
 
-const list = computed(() => list2tree<MenuType>(props.menus));
+const { menus } = storeToRefs(useUserStore());
+
+const list = computed(() => list2tree<TreeItem>(menus.value));
 </script>
 
 <template>
   <v-navigation-drawer width="240">
     <v-list density="compact" nav>
-      <template
-        v-for="{ id, type, route, name, children, icon } of list"
-        :key="id"
-      >
-        <v-list-subheader v-if="type === 'label'">
-          {{ name[locale] }}
-        </v-list-subheader>
-
+      <template v-for="item of list" :key="item.id">
         <v-list-group
-          v-else-if="Array.isArray(children)"
-          :value="id"
+          v-if="Array.isArray(item.children)"
+          :value="item.id"
           color="primary"
         >
           <template #activator="{ props: itemProps }">
             <v-list-item
               v-bind="itemProps"
-              :prepend-icon="`mdi-${icon}`"
-              :title="name[locale]"
+              :prepend-icon="`mdi-${item.icon}`"
+              :title="item.name?.[locale]"
             />
           </template>
 
           <v-list-item
-            v-for="subitem of children"
+            v-for="subitem of item.children"
             :key="subitem.id"
-            :title="subitem.name[locale]"
-            :to="`/${locale}/${route}/${subitem.route}`"
-            :value="`/${route}/${subitem.route}`"
+            :title="subitem.name?.[locale]"
+            :to="`/${locale}/${item.route}/${subitem.route}`"
+            :value="`/${item.route}/${subitem.route}`"
             color="primary"
           />
         </v-list-group>
 
         <v-list-item
           v-else
-          :prepend-icon="`mdi-${icon}`"
-          :title="name[locale]"
-          :to="`/${locale}/${route}`"
+          :prepend-icon="`mdi-${item.icon}`"
+          :title="item.name?.[locale]"
+          :to="`/${locale}/${item.route}`"
           color="primary"
         />
       </template>

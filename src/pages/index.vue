@@ -3,15 +3,16 @@ import { useLocale } from "vuetify";
 
 import useGlobalStore from "#/global";
 
-const route = useRoute();
+const router = useRouter();
 const { current } = useLocale();
 const { locale } = useI18n();
-const { snackbar } = useGlobalStore();
+
+const { snackbar } = storeToRefs(useGlobalStore());
 
 const drawer = ref(!0);
 
 watch(
-  () => route.params.lang,
+  () => router.currentRoute.value.params.lang,
   (lang) => {
     if (typeof lang === "string") {
       locale.value = lang || "zh";

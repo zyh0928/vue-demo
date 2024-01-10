@@ -1,46 +1,82 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useLocale } from "vuetify";
 
-import children from "@/routes";
-
 import useGlobalStore from "#/global";
+import useUserStore from "#/user";
+import { type MenuType, getRoutes } from "$/auth";
 import { langs } from "~/variables.json";
 
 import i18n from "./i18n";
 
+import type { RouteComponent } from "vue-router";
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
-      children,
-      path: "/:lang(en|zh)",
-      redirect: {
-        name: "welcome",
-      },
-    },
-    {
-      path: "/",
-      redirect: {
-        name: "welcome",
-        params: {
-          lang: "zh",
-        },
-      },
-    },
-    {
-      component: () => import("%/error/NotFound.vue"),
-      name: "notFound",
-      path: "/:pathMatch(.*)*",
-    },
-  ],
+  routes: [],
 });
 
+let routes: MenuType[];
 let setPage: (value: unknown) => void;
 let current: Ref<string>;
 
 const locales = langs.map(({ code }) => code);
 
-router.beforeEach(({ fullPath, name, params }) => {
+router.beforeEach(async ({ name, params, path }) => {
+  if (!routes?.length) {
+    const { setMenu } = useUserStore();
+
+    routes = await getRoutes();
+
+    setMenu(routes.filter((item) => item.type !== "route"));
+
+    const modules: Recordable<RouteComponent> = import.meta.glob("%/**/*.vue", {
+      eager: !0,
+      import: "default",
+    });
+
+    routes.forEach(({ component: path, props, route, type }) => {
+      const component = modules[`/src/pages/${path}.vue`];
+
+      if (component) {
+        let routeProps = {};
+
+        try {
+          routeProps = JSON.parse(props ?? "{}");
+        } catch {
+          //
+        }
+
+        router.addRoute({
+          ...routeProps,
+          component,
+          name: route,
+          path: `/:lang(zh|en)/${route}`,
+        });
+      }
+
+      if (type === "route") {
+        try {
+          const routeProps = JSON.parse(props ?? "{}");
+
+          router.addRoute({
+            ...routeProps,
+            path: route ?? "/",
+          });
+        } catch {
+          //
+        }
+      }
+    });
+
+    router.addRoute({
+      component: () => import("%/error/NotFound.vue"),
+      name: "notFound",
+      path: "/:pathMatch(.*)*",
+    });
+
+    router.push(path);
+  }
+
   if (!setPage) {
     setPage = useGlobalStore().setPage;
   }
@@ -60,7 +96,7 @@ router.beforeEach(({ fullPath, name, params }) => {
       return;
     }
 
-    router.push(`/en${fullPath}`);
+    router.push(`/zh${path}`);
   }
 });
 
