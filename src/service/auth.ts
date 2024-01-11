@@ -1,11 +1,18 @@
 import sleep from "@/utils/sleep";
 
+interface RouteType {
+  name: string;
+  path: string;
+  route: string;
+}
+
 export type MenuType = {
   id: GenericScalar;
-  component?: string;
   icon?: string;
+  items?: RouteType[];
   name?: I18nType;
   parentId?: GenericScalar;
+  path?: string;
   props?: string;
   route?: string;
   type?: "menu" | "route";
@@ -22,13 +29,13 @@ export const getRoutes = async (): Promise<MenuType[]> => {
       type: "route",
     },
     {
-      component: "welcome/index",
       icon: "human-greeting-variant",
       id: 2,
       name: {
         en: "Welcome",
         zh: "嗨！！",
       },
+      path: "welcome/index",
       route: "welcome",
     },
     {
@@ -38,32 +45,40 @@ export const getRoutes = async (): Promise<MenuType[]> => {
       type: "route",
     },
     {
-      component: "image/index",
       icon: "star-shooting",
       id: 4,
       name: {
         en: "Image",
         zh: "哇呜！",
       },
+      path: "image/index",
       route: "image",
     },
     {
-      component: "about/index",
       icon: "arrange-bring-forward",
       id: 5,
       name: {
         en: "About",
         zh: "关于",
       },
+      path: "about/index",
       route: "about",
     },
     {
       icon: "resistor-nodes",
       id: 7,
+      items: [
+        {
+          name: "nodeChild",
+          path: "node/views/children",
+          route: ":id(1|2)",
+        },
+      ],
       name: {
         en: "Root Node",
         zh: "根节点",
       },
+      path: "node/index",
       route: "node",
     },
     {

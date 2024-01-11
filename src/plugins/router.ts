@@ -8,7 +8,7 @@ import { langs } from "~/variables.json";
 
 import i18n from "./i18n";
 
-import type { RouteComponent } from "vue-router";
+import type { RouteComponent, RouteRecordRaw } from "vue-router";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -34,7 +34,7 @@ router.beforeEach(async ({ name, params, path }) => {
       import: "default",
     });
 
-    routes.forEach(({ component: path, props, route, type }) => {
+    routes.forEach(({ items, path, props, route, type }) => {
       const component = modules[`/src/pages/${path}.vue`];
 
       if (component) {
@@ -46,8 +46,16 @@ router.beforeEach(async ({ name, params, path }) => {
           //
         }
 
+        const children: RouteRecordRaw[] =
+          items?.map(({ name, path, route }) => ({
+            component: modules[`/src/pages/${path}.vue`],
+            name,
+            path: route,
+          })) ?? [];
+
         router.addRoute({
           ...routeProps,
+          children,
           component,
           name: route,
           path: `/:lang(zh|en)/${route}`,
