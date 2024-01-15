@@ -1,0 +1,5 @@
+node_modules/
+dist/
+pnpm-lock.yaml
+@types/auto-components.d.ts
+@types/auto-imports.d.ts

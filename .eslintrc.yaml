@@ -11,6 +11,12 @@ extends:
   - plugin:vue/vue3-recommended
   - "@vue/eslint-config-typescript/recommended"
   - "@vue/eslint-config-prettier"
+ignorePatterns:
+  - node_modules/
+  - dist/
+  - pnpm-lock.yaml
+  - "@types/auto-components.d.ts"
+  - "@types/auto-imports.d.ts"
 overrides:
   - files:
       - "*.yaml"
