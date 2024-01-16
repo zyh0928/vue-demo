@@ -15,11 +15,11 @@ interface ImportMeta {
 declare module "*.vue" {
   import type { DefineComponent } from "vue";
 
-  const component: DefineComponent<Recordable, Recordable, Recordable>;
+  const component: DefineComponent<KVMap, KVMap, KVMap>;
   export default component;
 }
 
 declare module "@@/locales/*.yaml" {
-  const data: I18nSchema;
+  const data: StrMap<string | StrMap>;
   export default data;
 }

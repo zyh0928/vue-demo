@@ -36,13 +36,8 @@ interface Pages {
   welcome: Welcome;
 }
 
-declare interface I18nSchema {
+// pnpx ts-json-schema-generator --path @types/schema/i18n.d.ts --type I18nSchema
+export interface I18nSchema {
   pages: Pages;
   validations: Validations;
 }
-
-// pnpx ts-json-schema-generator --path @types/schema/i18n.d.ts --type I18nSchema
-// export interface I18nSchema {
-//   pages: Pages;
-//   validations: Validations;
-// }

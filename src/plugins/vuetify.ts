@@ -28,7 +28,7 @@ const light: ThemeDefinition = {
   dark: !1,
 };
 
-const messages: Record<I18nCode, LocaleMessages> = {
+const messages: Record<string, LocaleMessages> = {
   en,
   zh,
 };

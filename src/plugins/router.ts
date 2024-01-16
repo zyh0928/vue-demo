@@ -29,7 +29,7 @@ router.beforeEach(async ({ name, params, path }) => {
 
     setMenu(routes.filter((item) => item.type !== "route"));
 
-    const modules: Recordable<RouteComponent> = import.meta.glob("%/**/*.vue", {
+    const modules: StrMap<RouteComponent> = import.meta.glob("%/**/*.vue", {
       eager: !0,
       import: "default",
     });
@@ -99,7 +99,7 @@ router.beforeEach(async ({ name, params, path }) => {
     }
 
     if (locales.includes(first)) {
-      i18n.global.locale.value = first as I18nCode;
+      i18n.global.locale.value = first;
       current.value = first;
       return;
     }

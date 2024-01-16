@@ -12,7 +12,7 @@ interface Props extends /* @vue-ignore */ Partial<DefaultProps> {}
 
 withDefaults(defineProps<Props>(), {});
 
-const { locale } = useI18n<Recordable<never>, I18nCode>();
+const { locale } = useI18n();
 
 const { menus } = storeToRefs(useUserStore());
 

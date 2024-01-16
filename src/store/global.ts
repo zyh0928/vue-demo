@@ -39,7 +39,7 @@ export default defineStore("global", () => {
 
   const showSnackbar = (msg: string, options?: Partial<VSnackbar>) => {
     snackbar.text = msg;
-    snackbar.options = options as Recordable;
+    snackbar.options = options as StrMap;
     snackbar.show = !0;
   };
 

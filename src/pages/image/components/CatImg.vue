@@ -19,7 +19,7 @@ const loaded = ref(!1);
 
 const getCats = async () => {
   emit("update:loading", !0);
-  const cats = (await getList()).map(({ url }: Recordable<string>) => url);
+  const cats = (await getList()).map(({ url }: StrMap) => url);
   emit("update:loading", !1);
 
   if (!cats.length) {

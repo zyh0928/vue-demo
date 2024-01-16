@@ -3,7 +3,7 @@ import zh from "@@/locales/zh.yaml";
 
 import { locale, localeFallback } from "~/variables.json";
 
-export default createI18n<[I18nSchema], I18nCode, false>({
+export default createI18n<[StrMap<string | StrMap>], string, false>({
   fallbackLocale: localeFallback,
   legacy: !1,
   locale,

@@ -18,7 +18,7 @@ const required = JSON.stringify(["validations.required", { field: "Api" }]);
 const rules = [(v?: string) => !!v || required];
 
 const api = ref("https://3650000.xyz/view/url/tuwan");
-const data = ref<Recordable>({});
+const data = ref<KVMap>({});
 const loading = ref(!1);
 
 const envs = computed(() => {

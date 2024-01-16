@@ -1,26 +1,16 @@
 export {};
 
 declare global {
-  type GenericScalar = number | string;
+  type StrNum = string | number;
 
-  type Recordable<T = unknown> = Record<GenericScalar, T>;
+  type KVMap<T = unknown> = Record<StrNum, T>;
+
+  type StrMap<T = string> = Record<string, T>;
 
   type Nullable<T = string> = T | null | undefined;
 
-  interface I18nType {
-    en: string;
-    zh: string;
-  }
-
-  type I18nCode = keyof I18nType;
-
-  interface FieldsMap {
-    label?: string;
-    value?: string;
-  }
-
   type OptionType<
-    ValueType = GenericScalar,
+    ValueType = StrNum,
     V extends string | undefined = "value",
     L extends string | undefined = "label",
   > = { [key in V]: ValueType } & { [K in L]: string } & {

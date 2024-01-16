@@ -7,11 +7,11 @@ interface RouteType {
 }
 
 export type MenuType = {
-  id: GenericScalar;
+  id: StrNum;
   icon?: string;
   items?: RouteType[];
-  name?: I18nType;
-  parentId?: GenericScalar;
+  name?: StrMap;
+  parentId?: StrNum;
   path?: string;
   props?: string;
   route?: string;
