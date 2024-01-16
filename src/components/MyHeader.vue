@@ -52,7 +52,7 @@ onMounted(() => {
             :key="code"
             :active="code === $i18n.locale"
             color="primary"
-            @click="$router.push({ params: { lang: code } })"
+            @click="$router.push({ params: { lang: code }, replace: !0 })"
           >
             <template #prepend>
               <v-avatar
