@@ -6,9 +6,11 @@ import en from "vuetify/lib/locale/en";
 // @ts-expect-error
 import zh from "vuetify/lib/locale/zh-Hans";
 
-import { locale, localeFallback } from "~/variables.json";
+import { langs } from "~/variables.json";
 
 import type { LocaleMessages, ThemeDefinition } from "vuetify";
+
+const [locale] = langs.map(({ code }) => code);
 
 const light: ThemeDefinition = {
   colors: {
@@ -35,7 +37,7 @@ const messages: Record<string, LocaleMessages> = {
 
 export default createVuetify({
   locale: {
-    fallback: localeFallback,
+    fallback: locale,
     locale,
     messages,
   },

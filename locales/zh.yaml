@@ -1,7 +1,6 @@
 pages:
   about:
     placeholder: 请输入 Api
-    title: 关于 Vue Demo
   error:
     "404": 页面未找到
     "500": 内部服务器错误
@@ -10,13 +9,9 @@ pages:
     cover: ✿◡‿◡
     dog: ∪･ω･∪
     girl: ︶ε╰✿
-    title: 哇呜！
-  node:
-    title: 节点
   welcome:
     axis: 轴
     fade: 渐隐
-    title: Vue Demo 主页
     wave: 波浪
 validations:
   required: "{field}不能为空"

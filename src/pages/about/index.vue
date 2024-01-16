@@ -11,11 +11,11 @@ interface EnvType {
   value: string;
 }
 
-const { showSnackbar } = useGlobalStore();
-
 const env = import.meta.env;
 const required = JSON.stringify(["validations.required", { field: "Api" }]);
 const rules = [(v?: string) => !!v || required];
+
+const { showSnackbar } = useGlobalStore();
 
 const api = ref("https://3650000.xyz/view/url/tuwan");
 const data = ref<KVMap>({});

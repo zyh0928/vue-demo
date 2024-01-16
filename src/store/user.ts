@@ -25,7 +25,7 @@ export default defineStore("user", () => {
     reloadRoute.value = Boolean(value);
   };
 
-  const setMenu = (value: unknown) => {
+  const setMenus = (value: unknown) => {
     menus.value = Array.isArray(value) ? value : [];
   };
 
@@ -33,7 +33,7 @@ export default defineStore("user", () => {
     $reset,
     menus,
     reloadRoute,
-    setMenu,
+    setMenus,
     setReloadRoute,
   };
 });

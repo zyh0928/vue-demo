@@ -1,8 +1,4 @@
-interface Page {
-  title: string;
-}
-
-interface About extends Page {
+interface About {
   placeholder: string;
 }
 
@@ -11,14 +7,14 @@ interface Error {
   "500": string;
 }
 
-interface Image extends Page {
+interface Image {
   cat: string;
   cover: string;
   dog: string;
   girl: string;
 }
 
-interface Welcome extends Page {
+interface Welcome {
   axis: string;
   fade: string;
   wave: string;
@@ -32,7 +28,6 @@ interface Pages {
   about: About;
   error: Error;
   image: Image;
-  node: Page;
   welcome: Welcome;
 }
 

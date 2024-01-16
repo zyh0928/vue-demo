@@ -11,15 +11,12 @@ interface SnackbarState {
 export default defineStore("global", () => {
   const user = useUserStore();
 
-  const page = ref("");
-
   const snackbar = reactive<SnackbarState>({
     show: !1,
     text: "",
   });
 
   const $reset = () => {
-    page.value = "";
     snackbar.show = !1;
     snackbar.text = "";
   };
@@ -33,10 +30,6 @@ export default defineStore("global", () => {
     localStorage.clear();
   };
 
-  const setPage = (value: unknown) => {
-    page.value = typeof value === "string" ? value : "";
-  };
-
   const showSnackbar = (msg: string, options?: Partial<VSnackbar>) => {
     snackbar.text = msg;
     snackbar.options = options as StrMap;
@@ -46,8 +39,6 @@ export default defineStore("global", () => {
   return {
     $reset,
     clearInfo,
-    page,
-    setPage,
     showSnackbar,
     snackbar,
   };

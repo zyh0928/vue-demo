@@ -7,12 +7,9 @@
       "properties": {
         "placeholder": {
           "type": "string"
-        },
-        "title": {
-          "type": "string"
         }
       },
-      "required": ["placeholder", "title"],
+      "required": ["placeholder"],
       "type": "object"
     },
     "Error": {
@@ -55,22 +52,9 @@
         },
         "girl": {
           "type": "string"
-        },
-        "title": {
-          "type": "string"
         }
       },
-      "required": ["cat", "cover", "dog", "girl", "title"],
-      "type": "object"
-    },
-    "Page": {
-      "additionalProperties": false,
-      "properties": {
-        "title": {
-          "type": "string"
-        }
-      },
-      "required": ["title"],
+      "required": ["cat", "cover", "dog", "girl"],
       "type": "object"
     },
     "Pages": {
@@ -85,14 +69,11 @@
         "image": {
           "$ref": "#/definitions/Image"
         },
-        "node": {
-          "$ref": "#/definitions/Page"
-        },
         "welcome": {
           "$ref": "#/definitions/Welcome"
         }
       },
-      "required": ["about", "error", "image", "node", "welcome"],
+      "required": ["about", "error", "image", "welcome"],
       "type": "object"
     },
     "Validations": {
@@ -114,14 +95,11 @@
         "fade": {
           "type": "string"
         },
-        "title": {
-          "type": "string"
-        },
         "wave": {
           "type": "string"
         }
       },
-      "required": ["axis", "fade", "title", "wave"],
+      "required": ["axis", "fade", "wave"],
       "type": "object"
     }
   }

@@ -1,7 +1,6 @@
 pages:
   about:
     placeholder: Please enter API
-    title: About Vue Demo
   error:
     "404": Page not found
     "500": Internal server error
@@ -10,13 +9,9 @@ pages:
     cover: ALLAH!!
     dog: Yap
     girl: AKBAR!!
-    title: Image
-  node:
-    title: Node
   welcome:
     axis: Axis
     fade: Fade
-    title: Welcome to Vue Demo
     wave: Wave
 validations:
   required: "{field} is required"

@@ -3,7 +3,6 @@ import { useLocale } from "vuetify";
 
 import { list2tree } from "@/utils/tree";
 
-import useGlobalStore from "#/global";
 import useUserStore, { type MenuType } from "#/user";
 import { getRoutes } from "$/user";
 import { langs } from "~/variables.json";
@@ -68,15 +67,13 @@ const tree2route = (tree: MenuType[], paraent: string) => {
   });
 };
 
-let setPage: (value: unknown) => void;
-
 router.beforeEach(async ({ name, params, path }) => {
-  const { reloadRoute, setMenu, setReloadRoute } = useUserStore();
+  const { reloadRoute, setMenus, setReloadRoute } = useUserStore();
 
   if (reloadRoute) {
     const routes = await getRoutes();
 
-    setMenu(
+    setMenus(
       list2tree<MenuType>(routes.filter((item) => item.type !== "router")),
     );
 
@@ -94,12 +91,6 @@ router.beforeEach(async ({ name, params, path }) => {
 
     return;
   }
-
-  if (!setPage) {
-    setPage = useGlobalStore().setPage;
-  }
-
-  setPage(name);
 
   if (name === "notFound") {
     const locales = langs.map(({ code }) => code);

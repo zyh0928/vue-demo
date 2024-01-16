@@ -40,7 +40,5 @@
       "code": "en",
       "label": "English"
     }
-  ],
-  "locale": "zh",
-  "localeFallback": "zh"
+  ]
 }

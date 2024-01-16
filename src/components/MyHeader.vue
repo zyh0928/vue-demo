@@ -1,16 +1,19 @@
 <script lang="ts" setup>
+import { useTitle } from "@vueuse/core";
 import { useTheme } from "vuetify/lib/framework.mjs";
 
-import useGlobalStore from "#/global";
+import useUserStore from "#/user";
 import { langs } from "~/variables.json";
 
 defineEmits<{ toggle: [] }>();
 
-const theme = useTheme();
-
 const baseUrl = import.meta.env.BASE_URL;
 
-const { page } = storeToRefs(useGlobalStore());
+const title = useTitle();
+const theme = useTheme();
+const route = useRoute();
+const { locale, t } = useI18n();
+const { menus } = storeToRefs(useUserStore());
 
 // TODO: to store
 const toggleTheme = () => {
@@ -21,9 +24,32 @@ const toggleTheme = () => {
   localStorage.setItem("theme", mode);
 };
 
+const getTitle = (paths: string[]) => {
+  if (!paths.length) return;
+
+  let node = menus.value.find((item) => item.route === paths[0]);
+
+  paths.slice(1).forEach((path) => {
+    node = node?.children?.find((item) => item.route === path) ?? node;
+  });
+
+  return node;
+};
+
 onMounted(() => {
   theme.global.name.value = localStorage.getItem("theme") ?? "light";
 });
+
+watch(
+  () => route.path,
+  (value) => {
+    const paths = value.split("/").slice(2);
+
+    const node = getTitle(paths);
+
+    title.value = node?.label?.[locale.value] || t("pages.error.404");
+  },
+);
 </script>
 
 <template>
@@ -33,11 +59,7 @@ onMounted(() => {
     </template>
 
     <v-app-bar-title>
-      {{
-        $te(`pages.${page}.title`)
-          ? $t(`pages.${page}.title`)
-          : $t("pages.error.404")
-      }}
+      {{ title }}
     </v-app-bar-title>
 
     <template #append>
