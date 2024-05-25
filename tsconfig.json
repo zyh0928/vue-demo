@@ -1,12 +1,11 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
-    "esModuleInterop": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "lib": ["DOM", "ESNext"],
+    "target": "ESNext",
+    "useDefineForClassFields": true,
     "module": "ESNext",
-    "moduleResolution": "Node",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "skipLibCheck": true,
+    "baseUrl": ".",
     "paths": {
       "#/*": ["src/store/*"],
       "$/*": ["src/service/*"],
@@ -15,12 +14,21 @@
       "@@/*": ["./*"],
       "~/*": ["src/assets/*"]
     },
+
+    /* Bundler mode */
+    "moduleResolution": "Bundler",
+    "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "sourceMap": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "preserve",
+    "verbatimModuleSyntax": true,
+
+    /* Linting */
     "strict": true,
-    "target": "ESNext",
-    "verbatimModuleSyntax": true
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
   },
   "include": ["src", "@types"],
   "references": [{ "path": "tsconfig.node.json" }]
