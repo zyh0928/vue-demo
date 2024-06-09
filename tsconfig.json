@@ -14,8 +14,6 @@
       "@@/*": ["./*"],
       "~/*": ["src/assets/*"]
     },
-
-    /* Bundler mode */
     "moduleResolution": "Bundler",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
@@ -23,8 +21,6 @@
     "noEmit": true,
     "jsx": "preserve",
     "verbatimModuleSyntax": true,
-
-    /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,

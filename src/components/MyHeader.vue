@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useTitle } from "@vueuse/core";
-import { useTheme } from "vuetify/lib/framework.mjs";
+import { useTheme } from "vuetify";
 
 import useUserStore from "#/user";
 import { langs } from "~/variables.json";
